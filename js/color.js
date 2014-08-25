@@ -11,7 +11,7 @@ Color.prototype = {
 
 	constructor: Color,
 
-	setFromHEX: function ( hex, a ) {
+	setFromHex: function ( hex, a ) {
 		this.r = parseInt( hex.substring( 1, 3 ), 16 );
 		this.g = parseInt( hex.substring( 3, 5 ), 16 );
 		this.b = parseInt( hex.substring( 5, 7 ), 16 );
@@ -23,7 +23,7 @@ Color.prototype = {
 		return 'rgba(' + this.r + ',' + this.g + ',' + this.b + ',' + this.a + ')';
 	},
 
-	getHEX: function () {
+	getHex: function () {
 		return '#' + ( ( 1 << 24 ) + ( this.r << 16 ) + ( this.g << 8 ) + this.b ).toString( 16 ).slice( 1 );
 	},
 

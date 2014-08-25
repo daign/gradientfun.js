@@ -8,11 +8,11 @@ var main = function () {
 	var ctx = this.node.getContext( '2d' );
 
 	var g1 = new Gradient();
-	g1.addColorStop( 0.00, new Color().setFromHEX( '#3b8f45', 1 ) );
-	g1.addColorStop( 0.25, new Color().setFromHEX( '#e5d411', 1 ) );
-	g1.addColorStop( 0.50, new Color().setFromHEX( '#4d91bc', 1 ) );
-	g1.addColorStop( 0.75, new Color().setFromHEX( '#d02743', 1 ) );
-	g1.addColorStop( 1.00, new Color().setFromHEX( '#765612', 1 ) );
+	g1.addColorStop( 0.00, new Color().setFromHex( '#3b8f45', 1 ) );
+	g1.addColorStop( 0.25, new Color().setFromHex( '#e5d411', 1 ) );
+	g1.addColorStop( 0.50, new Color().setFromHex( '#4d91bc', 1 ) );
+	g1.addColorStop( 0.75, new Color().setFromHex( '#d02743', 1 ) );
+	g1.addColorStop( 1.00, new Color().setFromHex( '#765612', 1 ) );
 
 	var steps = 200;
 	var rotations = 8.1;
@@ -35,6 +35,7 @@ var main = function () {
 			ctx.restore();
 		}
 	};
+	var throttledRender = throttle( render, 40, this );
 
 	render();
 
@@ -49,7 +50,7 @@ var main = function () {
 	document.body.appendChild( slider );
 	var onChange = function () {
 		rotations = slider.value;
-		render();
+		throttledRender();
 	};
 	slider.addEventListener( 'mousemove', onChange, false );
 
