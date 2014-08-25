@@ -8,11 +8,11 @@ var main = function () {
 	var ctx = this.node.getContext( '2d' );
 
 	var g1 = new Gradient();
-	g1.addStop( 0.00, '#3b8f45' );
-	g1.addStop( 0.25, '#e5d411' );
-	g1.addStop( 0.50, '#4d91bc' );
-	g1.addStop( 0.75, '#d02743' );
-	g1.addStop( 1.00, '#765612' );
+	g1.addColorStop( 0.00, new Color().setFromHEX( '#3b8f45', 1 ) );
+	g1.addColorStop( 0.25, new Color().setFromHEX( '#e5d411', 1 ) );
+	g1.addColorStop( 0.50, new Color().setFromHEX( '#4d91bc', 1 ) );
+	g1.addColorStop( 0.75, new Color().setFromHEX( '#d02743', 1 ) );
+	g1.addColorStop( 1.00, new Color().setFromHEX( '#765612', 1 ) );
 
 	var steps = 200;
 	var rotations = 8.1;
@@ -26,7 +26,7 @@ var main = function () {
 		for ( var i = 0; i <= steps; i++ ) {
 			ctx.save();
 			ctx.rotate( ( rotations*Math.PI ) * i/steps );
-			ctx.strokeStyle = g1.getColor( i/steps );
+			ctx.strokeStyle = g1.colorAt( i/steps ).getRGBA();
 			ctx.beginPath();
 			ctx.moveTo( 0, 80 );
 			ctx.lineTo( 0, 197 - 80*i/steps );
