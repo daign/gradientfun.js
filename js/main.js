@@ -39,20 +39,13 @@ var main = function () {
 
 	render();
 
-	document.body.appendChild( document.createElement( 'br' ) );
-	slider = document.createElement( 'input' );
-	slider.type = 'range';
-	slider.min = 0.5;
-	slider.max = 10;
-	slider.step = 0.01;
-	slider.value = 8.1;
-	slider.style.width = '420px';
-	document.body.appendChild( slider );
-	var onChange = function () {
-		rotations = slider.value;
-		throttledRender();
-	};
-	slider.addEventListener( 'mousemove', onChange, false );
+	var slider = new Slider( {
+		min: 50,
+		max: 1000,
+		values: [ 810 ],
+		onChange: function ( v ) { rotations = v[ 0 ]/100; throttledRender(); }
+	} );
+	document.body.appendChild( slider.domNode );
 
 };
 

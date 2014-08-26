@@ -1,0 +1,33 @@
+.action             { background-color: #3d9ecb; }
+.action:hover       { background-color: #6eb6d8; }
+.action:active      { background-color: #a3cce0; }
+.action.deactivated { background-color: #ba9; }
+
+.slider    { position: relative; margin: 8px; width: 330px; height: 30px; }
+.sliderbar { position: absolute; top: 6px; left: 6px; height: 18px; width: 318px; background: #765;  pointer-events: none; }
+.handle    { position: absolute; top: 0px; left: 0px; height: 30px; width: 30px; }
+.range     { position: absolute; top: 6px; left: 6px; height: 18px; background: #3283a9; pointer-events: none; }
+.range.deactivated { background: #987; }
+
+.pointer { cursor: pointer; }
+
+.corners {
+	-moz-border-radius-topleft:         5px;
+	-webkit-border-top-left-radius:     5px;
+	-khtml-border-top-left-radius:      5px;
+	border-top-left-radius:             5px;
+	-moz-border-radius-topright:        5px;
+	-webkit-border-top-right-radius:    5px;
+	-khtml-border-top-right-radius:     5px;
+	border-top-right-radius:            5px;
+
+	-moz-border-radius-bottomleft:      5px;
+	-webkit-border-bottom-left-radius:  5px;
+	-khtml-border-bottom-left-radius:   5px;
+	border-bottom-left-radius:          5px;
+	-moz-border-radius-bottomright:     5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-khtml-border-bottom-right-radius:  5px;
+	border-bottom-right-radius:         5px;
+}
+
