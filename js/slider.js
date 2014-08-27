@@ -12,7 +12,8 @@ Slider = function ( settings ) {
 
 	this.domNode = document.createElement( 'div' );
 	this.domNode.setAttribute( 'class', 'slider' );
-	this.domNode.addEventListener( 'mousedown', beginDrag, false );
+	this.domNode.addEventListener( 'mousedown',  beginDrag, false );
+	this.domNode.addEventListener( 'touchstart', beginDrag, false );
 
 	this.sliderbar = document.createElement( 'div' );
 	this.sliderbar.setAttribute( 'class', 'sliderbar corners' );
@@ -35,7 +36,8 @@ Slider = function ( settings ) {
 				beginDrag( event, n );
 			};
 
-			self.handles[ i ].addEventListener( 'mousedown', callback, false );
+			self.handles[ i ].addEventListener( 'mousedown',  callback, false );
+			self.handles[ i ].addEventListener( 'touchstart', callback, false );
 
 		} )();
 
@@ -47,6 +49,9 @@ Slider = function ( settings ) {
 	function beginDrag( event, n ) {
 
 		if ( !self.active ) { return; }
+
+		event.preventDefault();
+		event.stopPropagation();
 
 		if ( n === undefined ) {
 
@@ -83,15 +88,18 @@ Slider = function ( settings ) {
 
 		}
 
-		var dragStart = event.clientX;
+		var x0 = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
 		var valueStart = self.values[ n ];
 
-		event.preventDefault();
-		event.stopPropagation();
-
 		document.addEventListener( 'selectstart', cancelSelect, false );
+
 		document.addEventListener( 'mousemove',   continueDrag, false );
-		document.addEventListener( 'mouseup',     endDrag,      false );
+		document.addEventListener( 'touchmove',   continueDrag, false );
+
+		document.addEventListener( 'mouseup',     endDrag, false );
+		document.addEventListener( 'touchend',    endDrag, false );
+		document.addEventListener( 'touchcancel', endDrag, false );
+		document.addEventListener( 'touchleave',  endDrag, false );
 
 		function cancelSelect( event ) {
 
@@ -102,7 +110,10 @@ Slider = function ( settings ) {
 
 		function continueDrag( event ) {
 
-			var delta = Math.round( ( event.clientX - dragStart ) * ( self.max - self.min ) / self.width );
+			event.preventDefault();
+			event.stopPropagation();
+			var xt = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
+			var delta = Math.round( ( xt - x0 ) * ( self.max - self.min ) / self.width );
 			self.setValue( n, valueStart + delta );
 
 		}
@@ -110,8 +121,14 @@ Slider = function ( settings ) {
 		function endDrag() {
 
 			document.removeEventListener( 'selectstart', cancelSelect, false );
+
 			document.removeEventListener( 'mousemove',   continueDrag, false );
-			document.removeEventListener( 'mouseup',     endDrag,      false );
+			document.removeEventListener( 'touchmove',   continueDrag, false );
+
+			document.removeEventListener( 'mouseup',     endDrag, false );
+			document.removeEventListener( 'touchend',    endDrag, false );
+			document.removeEventListener( 'touchcancel', endDrag, false );
+			document.removeEventListener( 'touchleave',  endDrag, false );
 
 		}
 
