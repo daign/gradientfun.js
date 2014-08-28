@@ -48,6 +48,7 @@ var main = function () {
 		min: 50,
 		max: 1000,
 		values: [ 332 ],
+		dimensions: [ 330, 30 ],
 		onChange: function ( v ) { rotations = v[ 0 ]/100; throttledRender(); }
 	} );
 	document.body.appendChild( rotationsSlider.domNode );
@@ -57,6 +58,7 @@ var main = function () {
 		min: 0,
 		max: 200,
 		values: [ 40, 200 ],
+		dimensions: [ 330, 30 ],
 		onChange: function ( v ) { startRadius = v; throttledRender(); }
 	} );
 	document.body.appendChild( startRadiusSlider.domNode );
@@ -66,6 +68,7 @@ var main = function () {
 		min: 0,
 		max: 200,
 		values: [ 140, 160 ],
+		dimensions: [ 330, 30 ],
 		onChange: function ( v ) { endRadius = v; throttledRender(); }
 	} );
 	document.body.appendChild( endRadiusSlider.domNode );
