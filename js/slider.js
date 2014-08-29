@@ -2,9 +2,7 @@ Slider = function ( settings ) {
 
 	var self = this;
 
-	this.min = settings.min;
-	this.max = settings.max;
-	this.values = settings.values;
+	this.value = settings.value;
 	this.dimensions = settings.dimensions;
 	this.active = ( settings.active !== undefined ) ? settings.active : true;
 	this.onChange = settings.onChange;
@@ -25,7 +23,7 @@ Slider = function ( settings ) {
 
 	this.handles = new Array();
 
-	for ( var i = 0; i < this.values.length; i++ ) {
+	for ( var i = 0; i < this.value.getLen(); i++ ) {
 
 		this.handles[ i ] = document.createElement( 'div' );
 		this.domNode.appendChild( this.handles[ i ] );
@@ -59,12 +57,12 @@ Slider = function ( settings ) {
 
 			n = 0;
 			var value = undefined;
-			var l = self.values.length;
+			var l = self.value.getLen();
 
 			if ( l === 1 ) {
 
 				var position = ( event.offsetX || event.layerX ) - 15;
-				value = Math.round( position * ( self.max - self.min ) / self.width ) + self.min;
+				value = Math.round( position * ( self.value.getMax() - self.value.getMin() ) / self.width ) + self.value.getMin();
 
 			} else {
 
@@ -73,10 +71,10 @@ Slider = function ( settings ) {
 
 					var displacement = i * 30 / ( l-1 ) + 15;
 					var position = ( event.offsetX || event.layerX ) - displacement;
-					var vi = Math.round( position * ( self.max - self.min ) / self.width ) + self.min;
+					var vi = Math.round( position * ( self.value.getMax() - self.value.getMin() ) / self.width ) + self.value.getMin();
 
-					var distance = Math.abs( self.values[ i ] - vi );
-					if ( distance < minDistance || ( distance === minDistance && self.values[ i ] < vi ) ) {
+					var distance = Math.abs( self.value.get( i ) - vi );
+					if ( distance < minDistance || ( distance === minDistance && self.value.get( i ) < vi ) ) {
 						minDistance = distance;
 						n = i;
 						value = vi;
@@ -91,7 +89,7 @@ Slider = function ( settings ) {
 		}
 
 		var x0 = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
-		var valueStart = self.values[ n ];
+		self.value.snap( n );
 
 		document.addEventListener( 'selectstart', cancelSelect, false );
 
@@ -115,9 +113,10 @@ Slider = function ( settings ) {
 			event.preventDefault();
 			event.stopPropagation();
 			var xt = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
-			var delta = Math.round( ( xt - x0 ) * ( self.max - self.min ) / self.width );
-			self.setValue( n, valueStart + delta );
-
+			var delta = Math.round( ( xt - x0 ) * ( self.value.getMax() - self.value.getMin() ) / self.width );
+			self.value.drag( delta, n );
+			self.onChange();
+			self.redraw();
 		}
 
 		function endDrag() {
@@ -144,23 +143,18 @@ Slider.prototype = {
 
 	setValue: function ( n, v ) {
 
-		var lowerLimit = ( this.values[ n-1 ] !== undefined ) ? this.values[ n-1 ] : this.min;
-		var upperLimit = ( this.values[ n+1 ] !== undefined ) ? this.values[ n+1 ] : this.max;
+		//if ( v !== this.value.get( n ) ) {
 
-		v = Math.min( Math.max( v, lowerLimit ), upperLimit );
-
-		if ( v !== this.values[ n ] ) {
-
-			this.values[ n ] = v;
-			this.onChange( this.values );
+			this.value.set( v, n );
+			this.onChange();
 			this.redraw();
 
-		}
+		//}
 
 	},
 
 	resize: function () {
-		this.width = this.dimensions[ 0 ] - ( ( this.values.length > 1 ) ? 60 : 30 );
+		this.width = this.dimensions[ 0 ] - ( ( this.value.getLen() > 1 ) ? 60 : 30 );
 		this.height = this.dimensions[ 1 ];
 
 		this.domNode.style.width = this.dimensions[ 0 ] + 'px';
@@ -184,11 +178,11 @@ Slider.prototype = {
 
 	redraw: function () {
 
-		var l = this.values.length;
+		var l = this.value.getLen();
 
 		if ( l === 1 ) {
 
-			var position = ( this.values[ 0 ] - this.min ) * this.width / ( this.max - this.min );
+			var position = ( this.value.get( 0 ) - this.value.getMin() ) * this.width / ( this.value.getMax() - this.value.getMin() );
 			this.handles[ 0 ].style.left = position + 'px';
 			this.range.style.width = ( position + 9 ) + 'px';
 
@@ -198,7 +192,7 @@ Slider.prototype = {
 
 			for ( var i = 0; i < l; i++ ) {
 
-				var p = ( this.values[ i ] - this.min ) * this.width / ( this.max - this.min );
+				var p = ( this.value.get( i ) - this.value.getMin() ) * this.width / ( this.value.getMax() - this.value.getMin() );
 				positions[ i ] = p + i * 30 / ( l-1 );
 				this.handles[ i ].style.left = positions[ i ] + 'px';
 

@@ -15,9 +15,9 @@ var main = function () {
 	g1.addColorStop( 1.00, new Color().setFromHex( '#765612', 1 ) );
 
 	var steps = 200;
-	var rotations = 3.32;
-	var startRadius = [ 40, 200 ];
-	var endRadius = [ 140, 160 ];
+	var rotations = new Value.Limited( { value: 332, minimum: 50, maximum: 1000 } );
+	var startRadius = new Value.Range( { values: [ 40, 200 ], minimum: 0, maximum: 200, gap: 0 } );
+	var endRadius = new Value.Range( { values: [ 140, 160 ], minimum: 0, maximum: 200, gap: 0 } );
 
 	var render = function () {
 		ctx.setTransform( 1, 0, 0, 1, 0, 0 );
@@ -27,11 +27,11 @@ var main = function () {
 		ctx.lineCap = 'round';
 		for ( var i = 0; i <= steps; i++ ) {
 			ctx.save();
-			ctx.rotate( ( rotations*Math.PI ) * i/steps );
+			ctx.rotate( ( rotations.get( 0 )*Math.PI/100 ) * i/steps );
 			ctx.strokeStyle = g1.colorAt( i/steps ).getRGBA();
 			ctx.beginPath();
-			ctx.moveTo( 0, startRadius[ 0 ] - i/steps * ( startRadius[ 0 ] - endRadius[ 0 ] ) );
-			ctx.lineTo( 0, startRadius[ 1 ] - i/steps * ( startRadius[ 1 ] - endRadius[ 1 ] ) );
+			ctx.moveTo( 0, startRadius.get( 0 ) - i/steps * ( startRadius.get( 0 ) - endRadius.get( 0 ) ) );
+			ctx.lineTo( 0, startRadius.get( 1 ) - i/steps * ( startRadius.get( 1 ) - endRadius.get( 1 ) ) );
 			ctx.stroke();
 			ctx.closePath();
 			ctx.restore();
@@ -45,31 +45,25 @@ var main = function () {
 
 	document.body.appendChild( document.createTextNode( 'rotations:' ) );
 	var rotationsSlider = new Slider( {
-		min: 50,
-		max: 1000,
-		values: [ 332 ],
+		value: rotations,
 		dimensions: [ 330, 30 ],
-		onChange: function ( v ) { rotations = v[ 0 ]/100; throttledRender(); }
+		onChange: function () { throttledRender(); }
 	} );
 	document.body.appendChild( rotationsSlider.domNode );
 
 	document.body.appendChild( document.createTextNode( 'start radii:' ) );
 	var startRadiusSlider = new Slider( {
-		min: 0,
-		max: 200,
-		values: [ 40, 200 ],
+		value: startRadius,
 		dimensions: [ 330, 30 ],
-		onChange: function ( v ) { startRadius = v; throttledRender(); }
+		onChange: function () { throttledRender(); }
 	} );
 	document.body.appendChild( startRadiusSlider.domNode );
 
 	document.body.appendChild( document.createTextNode( 'end radii:' ) );
 	var endRadiusSlider = new Slider( {
-		min: 0,
-		max: 200,
-		values: [ 140, 160 ],
+		value: endRadius,
 		dimensions: [ 330, 30 ],
-		onChange: function ( v ) { endRadius = v; throttledRender(); }
+		onChange: function () { throttledRender(); }
 	} );
 	document.body.appendChild( endRadiusSlider.domNode );
 
