@@ -15,9 +15,9 @@ var main = function () {
 	g1.addColorStop( 1.00, new Color().setFromHex( '#765612', 1 ) );
 
 	var steps = 200;
-	var rotations = new Value.Limited( { value: 332, minimum: 50, maximum: 1000 } );
-	var startRadius = new Value.Range( { values: [ 40, 200 ], minimum: 0, maximum: 200, gap: 0 } );
-	var endRadius = new Value.Range( { values: [ 140, 160 ], minimum: 0, maximum: 200, gap: 0 } );
+	var rotations =   new Value( { values: [ 332 ],      minimum: 50, maximum: 1000 } );
+	var startRadius = new Value( { values: [ 40, 200 ],  minimum: 0,  maximum: 200, gap: 0 } );
+	var endRadius =   new Value( { values: [ 140, 160 ], minimum: 0,  maximum: 200, gap: 0 } );
 
 	var render = function () {
 		ctx.setTransform( 1, 0, 0, 1, 0, 0 );
