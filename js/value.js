@@ -1,22 +1,16 @@
 var Value = function ( settings ) {
 
-	var values = settings.values;
+	var values =  settings.values;
 	var minimum = settings.minimum;
 	var maximum = settings.maximum;
-	var gap = settings.gap;
-	var snapshots = [ undefined, undefined ];
+	var gap =     settings.gap;
+	var snapshots = values.slice();
 
 	this.set = function ( v, i ) {
-		if ( !isNaN( v ) ) {
-			if ( values.length === 1 ) {
-				values[ 0 ] = Math.min( maximum, Math.max( minimum, v ) );
-			} else {
-				if ( i === 0 ) {
-					values[ 0 ] = Math.min( values[ 1 ] - gap, Math.max( minimum, v ) );
-				} else {
-					values[ 1 ] = Math.min( maximum, Math.max( values[ 0 ] + gap, v ) );
-				}
-			}
+		if ( !isNaN( v ) && i < values.length ) {
+			var lowerLimit = ( values[ i-1 ] !== undefined ) ? values[ i-1 ]+gap : minimum;
+			var upperLimit = ( values[ i+1 ] !== undefined ) ? values[ i+1 ]-gap : maximum;
+			values[ i ] = Math.min( Math.max( v, lowerLimit ), upperLimit );
 		}
 		return this;
 	};
