@@ -6,3 +6,9 @@ body {
 	overflow: hidden;
 }
 
+.slider {
+	width: 330px;
+	height: 30px;
+	margin: 8px;
+}
+

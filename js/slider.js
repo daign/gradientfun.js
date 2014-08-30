@@ -2,20 +2,19 @@ Slider = function ( settings ) {
 
 	var self = this;
 
-	this.value = settings.value;
-	this.dimensions = settings.dimensions;
-	this.active = ( settings.active !== undefined ) ? settings.active : true;
+	this.value    = settings.value;
+	this.domNode  = settings.domNode;
+	this.active   = ( settings.active !== undefined ) ? settings.active : true;
 	this.onChange = settings.onChange;
 
 	this.width = undefined;
 
-	this.domNode = document.createElement( 'div' );
-	this.domNode.setAttribute( 'class', 'slider' );
+	this.domNode.classList.add( 'slider' );
 	this.domNode.addEventListener( 'mousedown',  beginDrag, false );
 	this.domNode.addEventListener( 'touchstart', beginDrag, false );
 
 	this.sliderbar = document.createElement( 'div' );
-	this.sliderbar.setAttribute( 'class', 'sliderbar corners' );
+	this.sliderbar.setAttribute( 'class', 'bar' );
 	this.domNode.appendChild( this.sliderbar );
 
 	this.range = document.createElement( 'div' );
@@ -84,7 +83,11 @@ Slider = function ( settings ) {
 
 			}
 
-			self.setValue( n, value );
+			//if ( v !== self.value.get( n ) ) {
+			self.value.set( value, n );
+			self.onChange();
+			self.redraw();
+			//}
 
 		}
 
@@ -141,24 +144,9 @@ Slider.prototype = {
 
 	constructor: Slider,
 
-	setValue: function ( n, v ) {
-
-		//if ( v !== this.value.get( n ) ) {
-
-			this.value.set( v, n );
-			this.onChange();
-			this.redraw();
-
-		//}
-
-	},
-
 	resize: function () {
-		this.width = this.dimensions[ 0 ] - ( ( this.value.getLen() > 1 ) ? 60 : 30 );
-		this.height = this.dimensions[ 1 ];
-
-		this.domNode.style.width = this.dimensions[ 0 ] + 'px';
-		this.domNode.style.height = this.height + 'px';
+		this.width = this.domNode.offsetWidth - ( ( this.value.getLen() > 1 ) ? 60 : 30 );
+		this.height = this.domNode.offsetHeight;
 
 		for ( var i = 0; i < this.handles.length; i++ ) {
 			this.handles[ i ].style.width = this.height + 'px';
@@ -169,7 +157,7 @@ Slider.prototype = {
 		this.range.style.top = ( this.height * 0.2 ) + 'px';
 		this.range.style.left = ( this.height * 0.2 ) + 'px';
 
-		this.sliderbar.style.width = ( this.dimensions[ 0 ] - this.height * 0.4 ) + 'px';
+		this.sliderbar.style.width = ( this.domNode.offsetWidth - this.height * 0.4 ) + 'px';
 		this.sliderbar.style.height = ( this.height * 0.6 ) + 'px';
 		this.sliderbar.style.top = ( this.height * 0.2 ) + 'px';
 		this.sliderbar.style.left = ( this.height * 0.2 ) + 'px';
@@ -209,10 +197,10 @@ Slider.prototype = {
 
 		this.active = a;
 
-		var rangeClasses = 'range corners' + ( a ? '' : ' deactivated' );
+		var rangeClasses = 'range' + ( a ? '' : ' deactivated' );
 		this.range.setAttribute( 'class', rangeClasses );
 
-		var handleClasses = 'handle action corners' + ( a ? ' pointer' : ' deactivated' );
+		var handleClasses = 'handle' + ( a ? '' : ' deactivated' );
 		for ( var i = 0; i < this.handles.length; i++ ) {
 			this.handles[ i ].setAttribute( 'class', handleClasses );
 		}

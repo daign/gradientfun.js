@@ -1,9 +1,9 @@
 var Value = function ( settings ) {
 
-	var values =  settings.values;
-	var minimum = settings.minimum;
-	var maximum = settings.maximum;
-	var gap =     settings.gap;
+	var values    = settings.values;
+	var minimum   = settings.minimum;
+	var maximum   = settings.maximum;
+	var gap       = settings.gap;
 	var snapshots = values.slice();
 
 	this.set = function ( v, i ) {

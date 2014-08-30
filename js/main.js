@@ -15,9 +15,9 @@ var main = function () {
 	g1.addColorStop( 1.00, new Color().setFromHex( '#765612', 1 ) );
 
 	var steps = 200;
-	var rotations =   new Value( { values: [ 332 ],      minimum: 50, maximum: 1000 } );
-	var startRadius = new Value( { values: [ 40, 200 ],  minimum: 0,  maximum: 200, gap: 0 } );
-	var endRadius =   new Value( { values: [ 140, 160 ], minimum: 0,  maximum: 200, gap: 0 } );
+	var rotations =  new Value( { values:      [ 332 ], minimum: 50, maximum: 1000 } );
+	var startRadii = new Value( { values:  [ 40, 200 ], minimum:  0, maximum:  200, gap: 0 } );
+	var endRadii   = new Value( { values: [ 140, 160 ], minimum:  0, maximum:  200, gap: 0 } );
 
 	var render = function () {
 		ctx.setTransform( 1, 0, 0, 1, 0, 0 );
@@ -30,8 +30,8 @@ var main = function () {
 			ctx.rotate( ( rotations.get( 0 )*Math.PI/100 ) * i/steps );
 			ctx.strokeStyle = g1.colorAt( i/steps ).getRGBA();
 			ctx.beginPath();
-			ctx.moveTo( 0, startRadius.get( 0 ) - i/steps * ( startRadius.get( 0 ) - endRadius.get( 0 ) ) );
-			ctx.lineTo( 0, startRadius.get( 1 ) - i/steps * ( startRadius.get( 1 ) - endRadius.get( 1 ) ) );
+			ctx.moveTo( 0, startRadii.get( 0 ) - i/steps * ( startRadii.get( 0 ) - endRadii.get( 0 ) ) );
+			ctx.lineTo( 0, startRadii.get( 1 ) - i/steps * ( startRadii.get( 1 ) - endRadii.get( 1 ) ) );
 			ctx.stroke();
 			ctx.closePath();
 			ctx.restore();
@@ -44,28 +44,19 @@ var main = function () {
 	document.body.appendChild( document.createElement( 'br' ) );
 
 	document.body.appendChild( document.createTextNode( 'rotations:' ) );
-	var rotationsSlider = new Slider( {
-		value: rotations,
-		dimensions: [ 330, 30 ],
-		onChange: function () { throttledRender(); }
-	} );
-	document.body.appendChild( rotationsSlider.domNode );
+	var s1 = document.createElement( 'div' );
+	document.body.appendChild( s1 );
+	new Slider( { value: rotations, domNode: s1, onChange: throttledRender } );
 
 	document.body.appendChild( document.createTextNode( 'start radii:' ) );
-	var startRadiusSlider = new Slider( {
-		value: startRadius,
-		dimensions: [ 330, 30 ],
-		onChange: function () { throttledRender(); }
-	} );
-	document.body.appendChild( startRadiusSlider.domNode );
+	var s2 = document.createElement( 'div' );
+	document.body.appendChild( s2 );
+	new Slider( { value: startRadii, domNode: s2, onChange: throttledRender } );
 
 	document.body.appendChild( document.createTextNode( 'end radii:' ) );
-	var endRadiusSlider = new Slider( {
-		value: endRadius,
-		dimensions: [ 330, 30 ],
-		onChange: function () { throttledRender(); }
-	} );
-	document.body.appendChild( endRadiusSlider.domNode );
+	var s3 = document.createElement( 'div' );
+	document.body.appendChild( s3 );
+	new Slider( { value: endRadii, domNode: s3, onChange: throttledRender } );
 
 };
 
