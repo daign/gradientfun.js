@@ -15,7 +15,7 @@ var main = function () {
 	g1.addColorStop( 1.00, new Color().setFromHex( '#765612', 1 ) );
 
 	var steps = 200;
-	var rotations =  new Value( { values:      [ 332 ], minimum: 50, maximum: 1000 } );
+	var rotations  = new Value( { values:      [ 332 ], minimum: 50, maximum: 1000 } );
 	var startRadii = new Value( { values:  [ 40, 200 ], minimum:  0, maximum:  200, gap: 0 } );
 	var endRadii   = new Value( { values: [ 140, 160 ], minimum:  0, maximum:  200, gap: 0 } );
 
@@ -57,6 +57,14 @@ var main = function () {
 	var s3 = document.createElement( 'div' );
 	document.body.appendChild( s3 );
 	new Slider( { value: endRadii, domNode: s3, onChange: throttledRender } );
+
+	var onResize = function () {
+		var event = new Event( 'resize' );
+		s1.dispatchEvent( event );
+		s2.dispatchEvent( event );
+		s3.dispatchEvent( event );
+	};
+	window.addEventListener( 'resize', onResize, false );
 
 };
 

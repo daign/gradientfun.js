@@ -13,6 +13,13 @@ Slider = function ( settings ) {
 	this.domNode.addEventListener( 'mousedown',  beginDrag, false );
 	this.domNode.addEventListener( 'touchstart', beginDrag, false );
 
+	var onResize = function () {
+		self.resize();
+		self.redraw();
+	};
+	var postponedResize = postpone( onResize, 40, this );
+	this.domNode.addEventListener( 'resize', onResize, false );
+
 	this.sliderbar = document.createElement( 'div' );
 	this.sliderbar.setAttribute( 'class', 'bar' );
 	this.domNode.appendChild( this.sliderbar );
@@ -42,8 +49,8 @@ Slider = function ( settings ) {
 	}
 
 	this.setActivation( this.active );
-	this.resize();
-	this.redraw();
+	onResize();
+	postponedResize();
 
 	function beginDrag( event, n ) {
 
@@ -145,6 +152,7 @@ Slider.prototype = {
 	constructor: Slider,
 
 	resize: function () {
+
 		this.width = this.domNode.offsetWidth - ( ( this.value.getLen() > 1 ) ? 60 : 30 );
 		this.height = this.domNode.offsetHeight;
 
