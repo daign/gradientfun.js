@@ -9,3 +9,6 @@ Licensed under [MIT License](https://github.com/daign/gradientfun.js/blob/master
 
 ![example](./example.png)
 
+Dependencies:
+* [tween.js](https://github.com/sole/tween.js)
+

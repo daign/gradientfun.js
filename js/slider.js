@@ -72,7 +72,7 @@ Slider = function ( settings ) {
 			if ( l === 1 ) {
 
 				var position = ( event.offsetX || event.layerX ) - 15;
-				value = Math.round( position * ( self.value.getMax() - self.value.getMin() ) / self.width ) + self.value.getMin();
+				value = position * ( self.value.getMax() - self.value.getMin() ) / self.width + self.value.getMin();
 
 			} else {
 
@@ -81,7 +81,7 @@ Slider = function ( settings ) {
 
 					var displacement = i * 30 / ( l-1 ) + 15;
 					var position = ( event.offsetX || event.layerX ) - displacement;
-					var vi = Math.round( position * ( self.value.getMax() - self.value.getMin() ) / self.width ) + self.value.getMin();
+					var vi = position * ( self.value.getMax() - self.value.getMin() ) / self.width + self.value.getMin();
 
 					var distance = Math.abs( self.value.get( i ) - vi );
 					if ( distance < minDistance || ( distance === minDistance && self.value.get( i ) < vi ) ) {
@@ -123,7 +123,7 @@ Slider = function ( settings ) {
 			event.preventDefault();
 			event.stopPropagation();
 			var xt = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
-			var delta = Math.round( ( xt - x0 ) * ( self.value.getMax() - self.value.getMin() ) / self.width );
+			var delta = ( xt - x0 ) * ( self.value.getMax() - self.value.getMin() ) / self.width;
 			self.value.drag( delta, n );
 
 		}

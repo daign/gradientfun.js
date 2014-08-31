@@ -15,9 +15,9 @@ var main = function () {
 	g1.addColorStop( 1.00, new Color().setFromHex( '#765612', 1 ) );
 
 	var steps = 200;
-	var rotations  = new Value( { values:      [ 332 ], minimum: 50, maximum: 1000 } );
-	var startRadii = new Value( { values:  [ 40, 200 ], minimum:  0, maximum:  200, gap: 0 } );
-	var endRadii   = new Value( { values: [ 140, 160 ], minimum:  0, maximum:  200, gap: 0 } );
+	var rotations  = new Value( { values:     [ 3.32 ], minimum: 0.5, maximum:  10 } );
+	var startRadii = new Value( { values:  [ 40, 200 ], minimum:   0, maximum: 200, gap: 1 } );
+	var endRadii   = new Value( { values: [ 140, 160 ], minimum:   0, maximum: 200, gap: 1 } );
 
 	var render = function () {
 		ctx.setTransform( 1, 0, 0, 1, 0, 0 );
@@ -27,7 +27,7 @@ var main = function () {
 		ctx.lineCap = 'round';
 		for ( var i = 0; i <= steps; i++ ) {
 			ctx.save();
-			ctx.rotate( ( rotations.get( 0 )*Math.PI/100 ) * i/steps );
+			ctx.rotate( ( rotations.get( 0 )*Math.PI ) * i/steps );
 			ctx.strokeStyle = g1.colorAt( i/steps ).getRGBA();
 			ctx.beginPath();
 			ctx.moveTo( 0, startRadii.get( 0 ) - i/steps * ( startRadii.get( 0 ) - endRadii.get( 0 ) ) );
@@ -68,6 +68,20 @@ var main = function () {
 		s3.dispatchEvent( event );
 	};
 	window.addEventListener( 'resize', onResize, false );
+
+	var animate = function () {
+		requestAnimationFrame( animate );
+		TWEEN.update();
+	};
+	animate();
+
+	var tween = new TWEEN.Tween( { r: 0.5 } )
+		.to( { r: 3.32 }, 2000 )
+		.easing( TWEEN.Easing.Quadratic.Out )
+		.onUpdate( function () {
+			rotations.set( this.r, 0 );
+		} )
+		.start();
 
 };
 
