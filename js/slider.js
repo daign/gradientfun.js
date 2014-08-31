@@ -9,8 +9,8 @@ Slider = function ( settings ) {
 	this.width = undefined;
 
 	this.domNode.classList.add( 'slider' );
-	this.domNode.addEventListener( 'mousedown',  beginDrag, false );
-	this.domNode.addEventListener( 'touchstart', beginDrag, false );
+	this.domNode.addEventListener( 'mousedown',  function ( event ) { self.beginDrag( event ); }, false );
+	this.domNode.addEventListener( 'touchstart', function ( event ) { self.beginDrag( event ); }, false );
 
 	var onResize = function () {
 		self.resize();
@@ -33,7 +33,7 @@ Slider = function ( settings ) {
 
 	this.handles = new Array();
 
-	for ( var i = 0; i < this.value.getLen(); i++ ) {
+	for ( var i = 0; i < this.value.getNumberOfValues(); i++ ) {
 
 		this.handles[ i ] = document.createElement( 'div' );
 		this.domNode.appendChild( this.handles[ i ] );
@@ -42,7 +42,7 @@ Slider = function ( settings ) {
 
 			var n = i;
 			var callback = function ( event ) {
-				beginDrag( event, n );
+				self.beginDrag( event, n );
 			};
 
 			self.handles[ i ].addEventListener( 'mousedown',  callback, false );
@@ -56,8 +56,15 @@ Slider = function ( settings ) {
 	onResize();
 	postponedResize();
 
-	function beginDrag( event, n ) {
+};
 
+Slider.prototype = {
+
+	constructor: Slider,
+
+	beginDrag: function ( event, n ) {
+
+		var self = this;
 		if ( !self.active ) { return; }
 
 		event.preventDefault();
@@ -67,12 +74,12 @@ Slider = function ( settings ) {
 
 			n = 0;
 			var value = undefined;
-			var l = self.value.getLen();
+			var l = self.value.getNumberOfValues();
 
 			if ( l === 1 ) {
 
 				var position = ( event.offsetX || event.layerX ) - 15;
-				value = position * ( self.value.getMax() - self.value.getMin() ) / self.width + self.value.getMin();
+				self.value.setRelative( position / self.width, n );
 
 			} else {
 
@@ -91,44 +98,32 @@ Slider = function ( settings ) {
 					}
 
 				}
+				self.value.set( value, n );
 
 			}
-
-			self.value.set( value, n );
 
 		}
 
 		var x0 = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
 		self.value.snap( n );
 
-		document.addEventListener( 'selectstart', cancelSelect, false );
-
-		document.addEventListener( 'mousemove',   continueDrag, false );
-		document.addEventListener( 'touchmove',   continueDrag, false );
-
-		document.addEventListener( 'mouseup',     endDrag, false );
-		document.addEventListener( 'touchend',    endDrag, false );
-		document.addEventListener( 'touchcancel', endDrag, false );
-		document.addEventListener( 'touchleave',  endDrag, false );
-
-		function cancelSelect( event ) {
+		var cancelSelect = function ( event ) {
 
 			event.preventDefault();
 			event.stopPropagation();
 
-		}
+		};
 
-		function continueDrag( event ) {
+		var continueDrag = function ( event ) {
 
 			event.preventDefault();
 			event.stopPropagation();
 			var xt = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
-			var delta = ( xt - x0 ) * ( self.value.getMax() - self.value.getMin() ) / self.width;
-			self.value.drag( delta, n );
+			self.value.dragRelative( ( xt - x0 ) / self.width, n );
 
-		}
+		};
 
-		function endDrag() {
+		var endDrag = function () {
 
 			document.removeEventListener( 'selectstart', cancelSelect, false );
 
@@ -140,19 +135,23 @@ Slider = function ( settings ) {
 			document.removeEventListener( 'touchcancel', endDrag, false );
 			document.removeEventListener( 'touchleave',  endDrag, false );
 
-		}
+		};
 
-	}
+		document.addEventListener( 'selectstart', cancelSelect, false );
 
-};
+		document.addEventListener( 'mousemove',   continueDrag, false );
+		document.addEventListener( 'touchmove',   continueDrag, false );
 
-Slider.prototype = {
+		document.addEventListener( 'mouseup',     endDrag, false );
+		document.addEventListener( 'touchend',    endDrag, false );
+		document.addEventListener( 'touchcancel', endDrag, false );
+		document.addEventListener( 'touchleave',  endDrag, false );
 
-	constructor: Slider,
+	},
 
 	resize: function () {
 
-		this.width = this.domNode.offsetWidth - ( ( this.value.getLen() > 1 ) ? 60 : 30 );
+		this.width = this.domNode.offsetWidth - ( ( this.value.getNumberOfValues() > 1 ) ? 60 : 30 );
 		this.height = this.domNode.offsetHeight;
 
 		for ( var i = 0; i < this.handles.length; i++ ) {
@@ -173,11 +172,11 @@ Slider.prototype = {
 
 	redraw: function () {
 
-		var l = this.value.getLen();
+		var l = this.value.getNumberOfValues();
 
 		if ( l === 1 ) {
 
-			var position = ( this.value.get( 0 ) - this.value.getMin() ) * this.width / ( this.value.getMax() - this.value.getMin() );
+			var position = this.width * this.value.getRelative( 0 );
 			this.handles[ 0 ].style.left = position + 'px';
 			this.range.style.width = ( position + 9 ) + 'px';
 
@@ -187,7 +186,7 @@ Slider.prototype = {
 
 			for ( var i = 0; i < l; i++ ) {
 
-				var p = ( this.value.get( i ) - this.value.getMin() ) * this.width / ( this.value.getMax() - this.value.getMin() );
+				var p = this.width * this.value.getRelative( i );
 				positions[ i ] = p + i * 30 / ( l-1 );
 				this.handles[ i ].style.left = positions[ i ] + 'px';
 

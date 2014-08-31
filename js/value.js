@@ -34,6 +34,8 @@ var Value = function ( settings ) {
 		if ( gap === ( maximum - minimum ) ) {
 			console.warn( 'gap equals range' );
 		}
+	} else {
+		gap = 0;
 	}
 
 	// listener functions will be called when value changes
@@ -62,6 +64,11 @@ var Value = function ( settings ) {
 		return this;
 	};
 
+	// sets a value from relative position between minimum and maximum
+	this.setRelative = function ( relativeValue, i ) {
+		return this.set( minimum + relativeValue * ( maximum - minimum ), i );
+	};
+
 	// conforming initial values, obligatory argument
 	var values = settings.values.slice();
 	for ( var i = 0; i < values.length; i++ ) {
@@ -73,8 +80,16 @@ var Value = function ( settings ) {
 
 	// getters
 
+	this.getNumberOfValues = function () {
+		return values.length;
+	};
+
 	this.get = function ( i ) {
 		return values[ i ];
+	};
+
+	this.getRelative = function ( i ) {
+		return ( values[ i ] - minimum ) / ( maximum - minimum );
 	};
 
 	this.getMin = function () {
@@ -85,8 +100,8 @@ var Value = function ( settings ) {
 		return maximum;
 	};
 
-	this.getLen = function () {
-		return values.length;
+	this.getMaxRange = function () {
+		return maximum - minimum;
 	};
 
 	// snap and drag
@@ -100,6 +115,11 @@ var Value = function ( settings ) {
 
 	this.drag = function ( offset, i ) {
 		this.set( snapshots[ i ] + offset, i );
+		return this;
+	};
+
+	this.dragRelative = function ( relativeOffset, i ) {
+		this.set( snapshots[ i ] + relativeOffset * ( maximum - minimum ), i );
 		return this;
 	};
 
