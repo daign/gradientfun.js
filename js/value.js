@@ -5,12 +5,19 @@ var Value = function ( settings ) {
 	var maximum   = settings.maximum;
 	var gap       = settings.gap;
 	var snapshots = values.slice();
+	var listeners = [];
 
 	this.set = function ( v, i ) {
 		if ( !isNaN( v ) && i < values.length ) {
+			var v0 = values[ i ];
 			var lowerLimit = ( values[ i-1 ] !== undefined ) ? values[ i-1 ]+gap : minimum;
 			var upperLimit = ( values[ i+1 ] !== undefined ) ? values[ i+1 ]-gap : maximum;
 			values[ i ] = Math.min( Math.max( v, lowerLimit ), upperLimit );
+			if ( values[ i ] !== v0 ) {
+				for ( var l = 0; l < listeners.length; l++ ) {
+					listeners[ l ]();
+				}
+			}
 		}
 		return this;
 	};
@@ -27,6 +34,10 @@ var Value = function ( settings ) {
 		return maximum;
 	};
 
+	this.getLen = function () {
+		return values.length;
+	};
+
 	this.snap = function ( i ) {
 		snapshots[ i ] = values[ i ];
 		return this;
@@ -37,8 +48,9 @@ var Value = function ( settings ) {
 		return this;
 	};
 
-	this.getLen = function () {
-		return values.length;
+	this.addListener = function ( l ) {
+		listeners.push( l );
+		return this;
 	};
 
 };

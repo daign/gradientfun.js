@@ -38,6 +38,9 @@ var main = function () {
 		}
 	};
 	var throttledRender = throttle( render, 40, this );
+	rotations.addListener( throttledRender );
+	startRadii.addListener( throttledRender );
+	endRadii.addListener( throttledRender );
 
 	render();
 
@@ -46,17 +49,17 @@ var main = function () {
 	document.body.appendChild( document.createTextNode( 'rotations:' ) );
 	var s1 = document.createElement( 'div' );
 	document.body.appendChild( s1 );
-	new Slider( { value: rotations, domNode: s1, onChange: throttledRender } );
+	new Slider( { value: rotations, domNode: s1 } );
 
 	document.body.appendChild( document.createTextNode( 'start radii:' ) );
 	var s2 = document.createElement( 'div' );
 	document.body.appendChild( s2 );
-	new Slider( { value: startRadii, domNode: s2, onChange: throttledRender } );
+	new Slider( { value: startRadii, domNode: s2 } );
 
 	document.body.appendChild( document.createTextNode( 'end radii:' ) );
 	var s3 = document.createElement( 'div' );
 	document.body.appendChild( s3 );
-	new Slider( { value: endRadii, domNode: s3, onChange: throttledRender } );
+	new Slider( { value: endRadii, domNode: s3 } );
 
 	var onResize = function () {
 		var event = new Event( 'resize' );

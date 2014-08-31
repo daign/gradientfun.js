@@ -2,10 +2,9 @@ Slider = function ( settings ) {
 
 	var self = this;
 
-	this.value    = settings.value;
-	this.domNode  = settings.domNode;
-	this.active   = ( settings.active !== undefined ) ? settings.active : true;
-	this.onChange = settings.onChange;
+	this.value   = settings.value;
+	this.domNode = settings.domNode;
+	this.active  = ( settings.active !== undefined ) ? settings.active : true;
 
 	this.width = undefined;
 
@@ -19,6 +18,11 @@ Slider = function ( settings ) {
 	};
 	var postponedResize = postpone( onResize, 40, this );
 	this.domNode.addEventListener( 'resize', onResize, false );
+
+	var onRedraw = function () {
+		self.redraw();
+	};
+	this.value.addListener( onRedraw );
 
 	this.sliderbar = document.createElement( 'div' );
 	this.sliderbar.setAttribute( 'class', 'bar' );
@@ -90,11 +94,7 @@ Slider = function ( settings ) {
 
 			}
 
-			//if ( v !== self.value.get( n ) ) {
 			self.value.set( value, n );
-			self.onChange();
-			self.redraw();
-			//}
 
 		}
 
@@ -125,8 +125,7 @@ Slider = function ( settings ) {
 			var xt = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
 			var delta = Math.round( ( xt - x0 ) * ( self.value.getMax() - self.value.getMin() ) / self.width );
 			self.value.drag( delta, n );
-			self.onChange();
-			self.redraw();
+
 		}
 
 		function endDrag() {
