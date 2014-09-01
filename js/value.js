@@ -123,5 +123,18 @@ var Value = function ( settings ) {
 		return this;
 	};
 
+	// randomize
+	this.randomize = function () {
+		for ( var i = 0; i < values.length; i++ ) {
+			values[ i ] = undefined;
+		}
+		for ( var i = 0; i < values.length; i++ ) {
+			var lowerLimit = ( i === 0 ) ? minimum : values[ i-1 ]+gap;
+			var upperLimit = maximum - gap * ( values.length-1 - i );
+			this.set( Math.random() * ( upperLimit - lowerLimit ) + lowerLimit, i );
+		}
+		return this;
+	};
+
 };
 

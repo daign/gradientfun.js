@@ -19,6 +19,13 @@ var main = function () {
 	var startRadii = new Value( { values:  [ 40, 200 ], minimum:   0, maximum: 200, gap: 1 } );
 	var endRadii   = new Value( { values: [ 140, 160 ], minimum:   0, maximum: 200, gap: 1 } );
 
+	var randomize = function () {
+		rotations.randomize();
+		startRadii.randomize();
+		endRadii.randomize();
+	};
+	this.node.addEventListener( 'click', randomize, false );
+
 	var render = function () {
 		ctx.setTransform( 1, 0, 0, 1, 0, 0 );
 		ctx.clearRect( 0, 0, 420, 420 );
@@ -75,13 +82,15 @@ var main = function () {
 	};
 	animate();
 
-	var tween = new TWEEN.Tween( { r: 0.5 } )
+	/*var tween = new TWEEN.Tween( { r: 0.5 } )
 		.to( { r: 3.32 }, 2000 )
 		.easing( TWEEN.Easing.Quadratic.Out )
 		.onUpdate( function () {
 			rotations.set( this.r, 0 );
 		} )
-		.start();
+		.start();*/
+
+	randomize();
 
 };
 
