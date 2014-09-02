@@ -1,5 +1,7 @@
 var Value = function ( settings ) {
 
+	var self = this;
+
 	// lower bound, obligatory argument
 	var minimum = settings.minimum;
 
@@ -69,6 +71,17 @@ var Value = function ( settings ) {
 		return this.set( minimum + relativeValue * ( maximum - minimum ), i );
 	};
 
+	// sets a value with an animation
+	this.setAnimated = function ( v, i, duration ) {
+		var tween = new TWEEN.Tween( { x: values[ i ] } )
+			.to( { x: v }, duration )
+			.easing( TWEEN.Easing.Quadratic.Out )
+			.onUpdate( function () {
+				self.set( this.x, i );
+			} )
+			.start();
+	};
+
 	// conforming initial values, obligatory argument
 	var values = settings.values.slice();
 	for ( var i = 0; i < values.length; i++ ) {
@@ -124,16 +137,23 @@ var Value = function ( settings ) {
 	};
 
 	// randomize
-	this.randomize = function () {
-		for ( var i = 0; i < values.length; i++ ) {
-			values[ i ] = undefined;
-		}
+
+	var randomValues = function ( setter, arguments ) {
 		for ( var i = 0; i < values.length; i++ ) {
 			var lowerLimit = ( i === 0 ) ? minimum : values[ i-1 ]+gap;
 			var upperLimit = maximum - gap * ( values.length-1 - i );
-			this.set( Math.random() * ( upperLimit - lowerLimit ) + lowerLimit, i );
+			var r = Math.random() * ( upperLimit - lowerLimit ) + lowerLimit;
+			setter.apply( this, [ r, i ].concat( arguments ) );
 		}
 		return this;
+	};
+
+	this.randomize = function () {
+		return randomValues( this.set, [] );
+	};
+
+	this.randomizeAnimated = function () {
+		return randomValues( this.setAnimated, [ 1000 ] );
 	};
 
 };

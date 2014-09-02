@@ -20,9 +20,9 @@ var main = function () {
 	var endRadii   = new Value( { values: [ 140, 160 ], minimum:   0, maximum: 200, gap: 1 } );
 
 	var randomize = function () {
-		rotations.randomize();
-		startRadii.randomize();
-		endRadii.randomize();
+		rotations.randomizeAnimated();
+		startRadii.randomizeAnimated();
+		endRadii.randomizeAnimated();
 	};
 	this.node.addEventListener( 'click', randomize, false );
 
@@ -45,9 +45,12 @@ var main = function () {
 		}
 	};
 	var throttledRender = throttle( render, 40, this );
-	rotations.addListener( throttledRender );
+	/*rotations.addListener( throttledRender );
 	startRadii.addListener( throttledRender );
-	endRadii.addListener( throttledRender );
+	endRadii.addListener( throttledRender );*/
+	rotations.addListener( render );
+	startRadii.addListener( render );
+	endRadii.addListener( render );
 
 	render();
 
@@ -81,14 +84,6 @@ var main = function () {
 		TWEEN.update();
 	};
 	animate();
-
-	/*var tween = new TWEEN.Tween( { r: 0.5 } )
-		.to( { r: 3.32 }, 2000 )
-		.easing( TWEEN.Easing.Quadratic.Out )
-		.onUpdate( function () {
-			rotations.set( this.r, 0 );
-		} )
-		.start();*/
 
 	randomize();
 
