@@ -52,8 +52,6 @@ var main = function () {
 	startRadii.addListener( render );
 	endRadii.addListener( render );
 
-	render();
-
 	document.body.appendChild( document.createElement( 'br' ) );
 
 	document.body.appendChild( document.createTextNode( 'rotations:' ) );

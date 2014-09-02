@@ -1,7 +1,5 @@
 var Value = function ( settings ) {
 
-	var self = this;
-
 	// lower bound, obligatory argument
 	var minimum = settings.minimum;
 
@@ -49,19 +47,30 @@ var Value = function ( settings ) {
 		return this;
 	};
 
+	// setters
+
+	var setDirect = function ( v, i ) {
+		var v0 = values[ i ];
+		values[ i ] = v;
+		if ( values[ i ] !== v0 ) {
+			for ( var l = 0; l < listeners.length; l++ ) {
+				listeners[ l ]();
+			}
+		}
+	};
+
+	var conform = function ( v, i ) {
+		var lowerLimit = ( values[ i-1 ] !== undefined ) ? values[ i-1 ]+gap : minimum;
+		var upperLimit = ( values[ i+1 ] !== undefined ) ? values[ i+1 ]-gap : maximum;
+		v = Math.min( Math.max( v, lowerLimit ), upperLimit );
+		v = alignToStep( v, 'round' );
+		return v;
+	};
+
 	// sets a value after conforming it to all restrictions
 	this.set = function ( v, i ) {
 		if ( !isNaN( v ) && i < values.length ) {
-			var v0 = values[ i ];
-			var lowerLimit = ( values[ i-1 ] !== undefined ) ? values[ i-1 ]+gap : minimum;
-			var upperLimit = ( values[ i+1 ] !== undefined ) ? values[ i+1 ]-gap : maximum;
-			v = Math.min( Math.max( v, lowerLimit ), upperLimit );
-			values[ i ] = alignToStep( v, 'round' );
-			if ( values[ i ] !== v0 ) {
-				for ( var l = 0; l < listeners.length; l++ ) {
-					listeners[ l ]();
-				}
-			}
+			setDirect( conform( v, i ), i );
 		}
 		return this;
 	};
@@ -73,13 +82,16 @@ var Value = function ( settings ) {
 
 	// sets a value with an animation
 	this.setAnimated = function ( v, i, duration ) {
-		var tween = new TWEEN.Tween( { x: values[ i ] } )
-			.to( { x: v }, duration )
-			.easing( TWEEN.Easing.Quadratic.Out )
-			.onUpdate( function () {
-				self.set( this.x, i );
-			} )
-			.start();
+		if ( !isNaN( v ) && i < values.length ) {
+			var tween = new TWEEN.Tween( { value: values[ i ] } )
+				.to( { value: conform( v, i ) }, duration )
+				.easing( TWEEN.Easing.Quadratic.Out )
+				.onUpdate( function () {
+					setDirect( this.value, i );
+				} )
+				.start();
+		}
+		return this;
 	};
 
 	// conforming initial values, obligatory argument
@@ -139,21 +151,23 @@ var Value = function ( settings ) {
 	// randomize
 
 	var randomValues = function ( setter, arguments ) {
+		var lowerLimit = minimum;
 		for ( var i = 0; i < values.length; i++ ) {
-			var lowerLimit = ( i === 0 ) ? minimum : values[ i-1 ]+gap;
 			var upperLimit = maximum - gap * ( values.length-1 - i );
 			var r = Math.random() * ( upperLimit - lowerLimit ) + lowerLimit;
+			lowerLimit = r + gap;
 			setter.apply( this, [ r, i ].concat( arguments ) );
 		}
-		return this;
 	};
 
 	this.randomize = function () {
-		return randomValues( this.set, [] );
+		randomValues( this.set, [] );
+		return this;
 	};
 
 	this.randomizeAnimated = function () {
-		return randomValues( this.setAnimated, [ 1000 ] );
+		randomValues( this.setAnimated, [ 1000 ] );
+		return this;
 	};
 
 };
