@@ -20,9 +20,9 @@ var main = function () {
 	var endRadii   = new Value( { values: [ 140, 160 ], minimum:   0, maximum: 200, gap: 1 } );
 
 	var randomize = function () {
-		rotations.randomizeAnimated();
-		startRadii.randomizeAnimated();
-		endRadii.randomizeAnimated();
+		rotations.randomizeAnimated( 1000 );
+		startRadii.randomizeAnimated( 1000 );
+		endRadii.randomizeAnimated( 1000 );
 	};
 	this.node.addEventListener( 'click', randomize, false );
 

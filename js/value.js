@@ -83,11 +83,18 @@ var Value = function ( settings ) {
 	// sets a value with an animation
 	this.setAnimated = function ( v, i, duration ) {
 		if ( !isNaN( v ) && i < values.length ) {
-			var tween = new TWEEN.Tween( { value: values[ i ] } )
+			if ( tweens[ i ] !== undefined ) {
+				tweens[ i ].stop();
+				tweens[ i ] = undefined;
+			}
+			tweens[ i ] = new TWEEN.Tween( { value: values[ i ] } )
 				.to( { value: conform( v, i ) }, duration )
 				.easing( TWEEN.Easing.Quadratic.Out )
 				.onUpdate( function () {
 					setDirect( this.value, i );
+				} )
+				.onComplete( function () {
+					tweens[ i ] = undefined;
 				} )
 				.start();
 		}
@@ -96,11 +103,13 @@ var Value = function ( settings ) {
 
 	// conforming initial values, obligatory argument
 	var values = settings.values.slice();
+	var tweens = [];
 	for ( var i = 0; i < values.length; i++ ) {
 		this.set( values[ i ], i );
 		if ( values[ i ] !== settings.values[ i ] ) {
 			console.warn( 'aligned initial value' );
 		}
+		tweens[ i ] = undefined;
 	}
 
 	// getters
@@ -165,8 +174,8 @@ var Value = function ( settings ) {
 		return this;
 	};
 
-	this.randomizeAnimated = function () {
-		randomValues( this.setAnimated, [ 1000 ] );
+	this.randomizeAnimated = function ( duration ) {
+		randomValues( this.setAnimated, [ duration ] );
 		return this;
 	};
 
