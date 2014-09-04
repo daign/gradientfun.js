@@ -9,8 +9,54 @@ Slider = function ( settings ) {
 	this.width = undefined;
 
 	this.domNode.classList.add( 'slider' );
-	this.domNode.addEventListener( 'mousedown',  function ( event ) { self.beginDrag( event ); }, false );
-	this.domNode.addEventListener( 'touchstart', function ( event ) { self.beginDrag( event ); }, false );
+	var n = undefined;
+	var myHandle = new Handle(
+		this.domNode,
+		function ( x0, p0 ) {
+			if ( !self.active ) { return; }
+			if ( n === undefined ) {
+
+				n = 0;
+				var value = undefined;
+				var l = self.value.getNumberOfValues();
+
+				if ( l === 1 ) {
+
+					var position = ( event.offsetX || event.layerX ) - 15;
+					self.value.setRelative( position / self.width, n );
+
+				} else {
+
+					var minDistance = Infinity;
+					for ( var i = 0; i < l; i++ ) {
+
+						var displacement = i * 30 / ( l-1 ) + 15;
+						var position = p0 - displacement;
+						var vi = position * ( self.value.getMax() - self.value.getMin() ) / self.width + self.value.getMin();
+
+						var distance = Math.abs( self.value.get( i ) - vi );
+						if ( distance < minDistance || ( distance === minDistance && self.value.get( i ) < vi ) ) {
+							minDistance = distance;
+							n = i;
+							value = vi;
+						}
+
+					}
+					self.value.set( value, n );
+
+				}
+
+			}
+
+			self.value.snap( n );
+		},
+		function ( x0, xt ) {
+			self.value.dragRelative( ( xt - x0 ) / self.width, n );
+		},
+		function () {
+			n = undefined;
+		}
+	);
 
 	var onResize = function () {
 		self.resize();
@@ -45,8 +91,9 @@ Slider = function ( settings ) {
 				self.beginDrag( event, n );
 			};
 
-			self.handles[ i ].addEventListener( 'mousedown',  callback, false );
-			self.handles[ i ].addEventListener( 'touchstart', callback, false );
+			//self.handles[ i ].addEventListener( 'mousedown',  callback, false );
+			//self.handles[ i ].addEventListener( 'touchstart', callback, false );
+			self.handles[ i ].style.pointerEvents = 'none';
 
 		} )();
 
@@ -61,93 +108,6 @@ Slider = function ( settings ) {
 Slider.prototype = {
 
 	constructor: Slider,
-
-	beginDrag: function ( event, n ) {
-
-		var self = this;
-		if ( !self.active ) { return; }
-
-		event.preventDefault();
-		event.stopPropagation();
-
-		if ( n === undefined ) {
-
-			n = 0;
-			var value = undefined;
-			var l = self.value.getNumberOfValues();
-
-			if ( l === 1 ) {
-
-				var position = ( event.offsetX || event.layerX ) - 15;
-				self.value.setRelative( position / self.width, n );
-
-			} else {
-
-				var minDistance = Infinity;
-				for ( var i = 0; i < l; i++ ) {
-
-					var displacement = i * 30 / ( l-1 ) + 15;
-					var position = ( event.offsetX || event.layerX ) - displacement;
-					var vi = position * ( self.value.getMax() - self.value.getMin() ) / self.width + self.value.getMin();
-
-					var distance = Math.abs( self.value.get( i ) - vi );
-					if ( distance < minDistance || ( distance === minDistance && self.value.get( i ) < vi ) ) {
-						minDistance = distance;
-						n = i;
-						value = vi;
-					}
-
-				}
-				self.value.set( value, n );
-
-			}
-
-		}
-
-		var x0 = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
-		self.value.snap( n );
-
-		var cancelSelect = function ( event ) {
-
-			event.preventDefault();
-			event.stopPropagation();
-
-		};
-
-		var continueDrag = function ( event ) {
-
-			event.preventDefault();
-			event.stopPropagation();
-			var xt = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
-			self.value.dragRelative( ( xt - x0 ) / self.width, n );
-
-		};
-
-		var endDrag = function () {
-
-			document.removeEventListener( 'selectstart', cancelSelect, false );
-
-			document.removeEventListener( 'mousemove',   continueDrag, false );
-			document.removeEventListener( 'touchmove',   continueDrag, false );
-
-			document.removeEventListener( 'mouseup',     endDrag, false );
-			document.removeEventListener( 'touchend',    endDrag, false );
-			document.removeEventListener( 'touchcancel', endDrag, false );
-			document.removeEventListener( 'touchleave',  endDrag, false );
-
-		};
-
-		document.addEventListener( 'selectstart', cancelSelect, false );
-
-		document.addEventListener( 'mousemove',   continueDrag, false );
-		document.addEventListener( 'touchmove',   continueDrag, false );
-
-		document.addEventListener( 'mouseup',     endDrag, false );
-		document.addEventListener( 'touchend',    endDrag, false );
-		document.addEventListener( 'touchcancel', endDrag, false );
-		document.addEventListener( 'touchleave',  endDrag, false );
-
-	},
 
 	resize: function () {
 
