@@ -70,6 +70,10 @@ var Value = function ( settings ) {
 	// sets a value after conforming it to all restrictions
 	this.set = function ( v, i ) {
 		if ( !isNaN( v ) && i < values.length ) {
+			if ( tweens[ i ] !== undefined ) {
+				tweens[ i ].stop();
+				tweens[ i ] = undefined;
+			}
 			setDirect( conform( v, i ), i );
 		}
 		return this;
