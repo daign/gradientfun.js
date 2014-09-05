@@ -10,11 +10,11 @@ Slider = function ( settings ) {
 
 	this.domNode.classList.add( 'slider' );
 	var n = undefined;
-	var myHandle = new Handle(
-		this.domNode,
-		function ( pos0 ) {
+	var myHandle = new Handle( {
+		domNode: this.domNode,
+		beginning: function () {
 			if ( !self.active ) { return; }
-			var p0 = pos0.x - self.domNode.offsetLeft;
+			var p0 = this.vector0.x - self.domNode.offsetLeft;
 			if ( n === undefined ) {
 
 				n = 0;
@@ -51,14 +51,15 @@ Slider = function ( settings ) {
 
 			self.value.snap( n );
 		},
-		function ( pos0, posT ) {
-			self.value.dragRelative( ( posT.x - pos0.x ) / self.width, n );
+		continuing: function () {
+			self.value.dragRelative( ( this.vectorT.x - this.vector0.x ) / self.width, n );
 		},
-		function () {
+		ending: function () {
 			n = undefined;
 		},
-		new Vector2()
-	);
+		vector0: new Vector2(),
+		vectorT: new Vector2()
+	} );
 
 	var onResize = function () {
 		self.resize();
