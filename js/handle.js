@@ -1,6 +1,7 @@
-var Handle = function ( node, beginning, continuing, ending ) {
+var Handle = function ( node, beginning, continuing, ending, vector ) {
 
 	this.domNode = node;
+	this.vector = vector;
 
 	this.beginning = beginning;
 	this.continuing = continuing;
@@ -23,9 +24,8 @@ Handle.prototype = {
 		event.preventDefault();
 		event.stopPropagation();
 
-		var x0 = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
-		var p0 = ( event.offsetX || event.layerX );
-		this.beginning( x0, p0 );
+		self.vector.setFromEvent( event );
+		this.beginning( self.vector );
 
 		var cancelSelect = function ( event ) {
 
@@ -39,8 +39,8 @@ Handle.prototype = {
 			event.preventDefault();
 			event.stopPropagation();
 
-			var xt = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
-			self.continuing( x0, xt );
+			var posT = new Vector2().setFromEvent( event );
+			self.continuing( self.vector, posT );
 
 		};
 

@@ -12,8 +12,9 @@ Slider = function ( settings ) {
 	var n = undefined;
 	var myHandle = new Handle(
 		this.domNode,
-		function ( x0, p0 ) {
+		function ( pos0 ) {
 			if ( !self.active ) { return; }
+			var p0 = pos0.x - self.domNode.offsetLeft;
 			if ( n === undefined ) {
 
 				n = 0;
@@ -22,7 +23,7 @@ Slider = function ( settings ) {
 
 				if ( l === 1 ) {
 
-					var position = ( event.offsetX || event.layerX ) - 15;
+					var position = p0 - 15;
 					self.value.setRelative( position / self.width, n );
 
 				} else {
@@ -50,12 +51,13 @@ Slider = function ( settings ) {
 
 			self.value.snap( n );
 		},
-		function ( x0, xt ) {
-			self.value.dragRelative( ( xt - x0 ) / self.width, n );
+		function ( pos0, posT ) {
+			self.value.dragRelative( ( posT.x - pos0.x ) / self.width, n );
 		},
 		function () {
 			n = undefined;
-		}
+		},
+		new Vector2()
 	);
 
 	var onResize = function () {
