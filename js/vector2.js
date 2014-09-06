@@ -23,6 +23,53 @@ Vector2.prototype = {
 
 	clone: function () {
 		return new Vector2( this.x, this. y );
+	},
+
+	add: function ( v ) {
+		this.x += v.x;
+		this.y += v.y;
+		return this;
+	},
+
+	sub: function ( v ) {
+		this.x -= v.x;
+		this.y -= v.y;
+		return this;
+	},
+
+	addScalar: function ( s ) {
+		this.x += s;
+		this.y += s;
+		return this;
+	},
+
+	multiplyScalar: function ( s ) {
+		this.x *= s;
+		this.y *= s;
+		return this;
+	},
+
+	divideScalar: function ( s ) {
+		var invScalar = 1 / s;
+		this.x *= invScalar;
+		this.y *= invScalar;
+		return this;
+	},
+
+	min: function ( v ) {
+		this.x = Math.min( this.x, v.x );
+		this.y = Math.min( this.y, v.y );
+		return this;
+	},
+
+	max: function ( v ) {
+		this.x = Math.max( this.x, v.x );
+		this.y = Math.max( this.y, v.y );
+		return this;
+	},
+
+	distanceTo: function ( v ) {
+		return Math.sqrt( Math.pow( this.x - v.x, 2 ) + Math.pow( this.y - v.y, 2 ) );
 	}
 
 };
