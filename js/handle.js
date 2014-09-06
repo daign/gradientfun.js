@@ -10,23 +10,13 @@ var Handle = function ( settings ) {
 
 	var self = this;
 
-	this.domNode.addEventListener( 'mousedown',  function ( event ) { self.beginDrag( event ); }, false );
-	this.domNode.addEventListener( 'touchstart', function ( event ) { self.beginDrag( event ); }, false );
+	var beginDrag = function ( event ) {
 
-};
-
-Handle.prototype = {
-
-	constructor: Handle,
-
-	beginDrag: function ( event ) {
-
-		var self = this;
 		event.preventDefault();
 		event.stopPropagation();
 
 		self.vector0.setFromEvent( event );
-		this.beginning();
+		self.beginning();
 
 		var cancelSelect = function ( event ) {
 
@@ -71,7 +61,10 @@ Handle.prototype = {
 		document.addEventListener( 'touchcancel', endDrag, false );
 		document.addEventListener( 'touchleave',  endDrag, false );
 
-	}
+	};
+
+	this.domNode.addEventListener( 'mousedown',  beginDrag, false );
+	this.domNode.addEventListener( 'touchstart', beginDrag, false );
 
 };
 
