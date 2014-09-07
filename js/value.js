@@ -39,7 +39,7 @@ var Value = function ( settings ) {
 	}
 
 	// listener functions will be called when value changes
-	var listeners = [];
+	var listeners = ( settings.listeners !== undefined ) ? settings.listeners : [];
 
 	// adds a listener function
 	this.addListener = function ( l ) {
@@ -130,6 +130,10 @@ var Value = function ( settings ) {
 		return ( values[ i ] - minimum ) / ( maximum - minimum );
 	};
 
+	this.getValues = function () {
+		return values.slice();
+	};
+
 	this.getMin = function () {
 		return minimum;
 	};
@@ -140,6 +144,18 @@ var Value = function ( settings ) {
 
 	this.getMaxRange = function () {
 		return maximum - minimum;
+	};
+
+	this.getStep = function () {
+		return step;
+	};
+
+	this.getGap = function () {
+		return gap;
+	};
+
+	this.getListeners = function () {
+		return listeners.slice();
 	};
 
 	// snap and drag
@@ -181,6 +197,29 @@ var Value = function ( settings ) {
 	this.randomizeAnimated = function ( duration ) {
 		randomValues( this.setAnimated, [ duration ] );
 		return this;
+	};
+
+	// copy and clone
+
+	this.copy = function ( v ) {
+		values    = v.getValues();
+		minimum   = v.getMin();
+		maximum   = v.getMax();
+		step      = v.getStep();
+		gap       = v.getGap();
+		listeners = v.getListeners();
+		return this;
+	};
+
+	this.clone = function () {
+		return new Value( {
+			values: values.slice(),
+			minimum: minimum,
+			maximum: maximum,
+			step: step,
+			gap: gap,
+			listeners: listeners.slice()
+		} );
 	};
 
 };
