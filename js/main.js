@@ -7,12 +7,12 @@ var main = function () {
 
 	var ctx = this.node.getContext( '2d' );
 
-	var g1 = new Gradient();
-	g1.addColorStop( 0.00, new Color().setFromHex( '#3b8f45', 1 ) );
-	g1.addColorStop( 0.25, new Color().setFromHex( '#e5d411', 1 ) );
-	g1.addColorStop( 0.50, new Color().setFromHex( '#4d91bc', 1 ) );
-	g1.addColorStop( 0.75, new Color().setFromHex( '#d02743', 1 ) );
-	g1.addColorStop( 1.00, new Color().setFromHex( '#765612', 1 ) );
+	var g1 = new Value.Gradient();
+	g1.addColorStop( 0.00, new Value.Color().setFromHex( '#3b8f45', 1 ) );
+	g1.addColorStop( 0.25, new Value.Color().setFromHex( '#e5d411', 1 ) );
+	g1.addColorStop( 0.50, new Value.Color().setFromHex( '#4d91bc', 1 ) );
+	g1.addColorStop( 0.75, new Value.Color().setFromHex( '#d02743', 1 ) );
+	g1.addColorStop( 1.00, new Value.Color().setFromHex( '#765612', 1 ) );
 
 	var steps = 200;
 	var rotations  = new Value.Limited( { values:     [ 3.32 ], minimum: 0.5, maximum:  10 } );

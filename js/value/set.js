@@ -1,6 +1,6 @@
 Value.Set = function () {
 
-	values = [];
+	var values = [];
 
 	this.addValue = function ( v ) {
 		values.push( v );
@@ -12,16 +12,16 @@ Value.Set = function () {
 	};
 
 	this.copy = function ( s ) {
-		values = s.getValues();
+		values = [];
+		var sValues = s.getValues();
+		for ( var i = 0; i < sValues.length; i++ ) {
+			values.push( sValues[ i ].clone() );
+		}
 		return this;
 	};
 
 	this.clone = function () {
-		var s = new Value.Set();
-		for ( var i = 0; i < values.length; i++ ) {
-			s.addValue( values[ i ].clone() );
-		}
-		return s;
+		return new Value.Set().copy( this );
 	};
 
 };

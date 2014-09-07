@@ -1,10 +1,10 @@
-var Gradient = function () {
+Value.Gradient = function () {
 	this.stops = [];
 };
 
-Gradient.prototype = {
+Value.Gradient.prototype = {
 
-	constructor: Gradient,
+	constructor: Value.Gradient,
 
 	addColorStop: function ( pos, col ) {
 		this.stops.push( { position: pos, color: col } );
@@ -32,6 +32,18 @@ Gradient.prototype = {
 			var f = ( pos - sL.position ) / ( sU.position - sL.position );
 			return sU.color.clone().sub( sL.color ).multiplyScalar( f ).add( sL.color ).confine();
 		}
+	},
+
+	copy: function ( g ) {
+		this.stops = [];
+		for ( var i = 0; i < g.stops.length; i++ ) {
+			this.stops.push( { position: g.stops[ i ].position, color: g.stops[ i ].color.clone() } );
+		}
+		return this;
+	},
+
+	clone: function () {
+		return new Value.Gradient().copy( this );
 	}
 
 };

@@ -57,8 +57,8 @@ Slider = function ( settings ) {
 		ending: function () {
 			n = undefined;
 		},
-		vector0: new Vector2(),
-		vectorT: new Vector2()
+		vector0: new Value.Vector2(),
+		vectorT: new Value.Vector2()
 	} );
 
 	var onResize = function () {

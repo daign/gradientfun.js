@@ -1,13 +1,13 @@
-Vector2 = function ( x, y ) {
+Value.Vector2 = function ( x, y ) {
 
 	this.x = x || 0;
 	this.y = y || 0;
 
 };
 
-Vector2.prototype = {
+Value.Vector2.prototype = {
 
-	constructor: Vector2,
+	constructor: Value.Vector2,
 
 	set: function ( x, y ) {
 		this.x = x;
@@ -21,8 +21,14 @@ Vector2.prototype = {
 		return this;
 	},
 
+	copy: function ( v ) {
+		this.x = v.x;
+		this.y = v.y;
+		return this;
+	},
+
 	clone: function () {
-		return new Vector2( this.x, this. y );
+		return new Value.Vector2( this.x, this. y );
 	},
 
 	add: function ( v ) {

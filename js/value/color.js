@@ -1,4 +1,4 @@
-var Color = function ( r, g, b, a ) {
+Value.Color = function ( r, g, b, a ) {
 
 	this.r = r || 0;
 	this.g = g || 0;
@@ -7,9 +7,9 @@ var Color = function ( r, g, b, a ) {
 
 };
 
-Color.prototype = {
+Value.Color.prototype = {
 
-	constructor: Color,
+	constructor: Value.Color,
 
 	setFromHex: function ( hex, a ) {
 		this.r = parseInt( hex.substring( 1, 3 ), 16 );
@@ -59,8 +59,15 @@ Color.prototype = {
 		return this;
 	},
 
+	copy: function ( c ) {
+		this.r = c.r;
+		this.g = c.g;
+		this.b = c.b;
+		this.a = c.a;
+	},
+
 	clone: function () {
-		return new Color( this.r, this.g, this.b, this.a );
+		return new Value.Color( this.r, this.g, this.b, this.a );
 	}
 
 };
