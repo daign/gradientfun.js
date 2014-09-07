@@ -15,9 +15,9 @@ var main = function () {
 	g1.addColorStop( 1.00, new Color().setFromHex( '#765612', 1 ) );
 
 	var steps = 200;
-	var rotations  = new Value( { values:     [ 3.32 ], minimum: 0.5, maximum:  10 } );
-	var startRadii = new Value( { values:  [ 40, 200 ], minimum:   0, maximum: 200, gap: 1 } );
-	var endRadii   = new Value( { values: [ 140, 160 ], minimum:   0, maximum: 200, gap: 1 } );
+	var rotations  = new Value.Limited( { values:     [ 3.32 ], minimum: 0.5, maximum:  10 } );
+	var startRadii = new Value.Limited( { values:  [ 40, 200 ], minimum:   0, maximum: 200, gap: 1 } );
+	var endRadii   = new Value.Limited( { values: [ 140, 160 ], minimum:   0, maximum: 200, gap: 1 } );
 
 	var randomize = function () {
 		rotations.randomizeAnimated( 1000 );

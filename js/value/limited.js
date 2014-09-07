@@ -1,4 +1,4 @@
-var Value = function ( settings ) {
+Value.Limited = function ( settings ) {
 
 	// lower bound, obligatory argument
 	var minimum = settings.minimum;
@@ -212,7 +212,7 @@ var Value = function ( settings ) {
 	};
 
 	this.clone = function () {
-		return new Value( {
+		return new Value.Limited( {
 			values: values.slice(),
 			minimum: minimum,
 			maximum: maximum,
