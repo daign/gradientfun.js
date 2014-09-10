@@ -65,7 +65,7 @@ Slider = function ( settings ) {
 		self.resize();
 		self.redraw();
 	};
-	var postponedResize = postpone( onResize, 40, this );
+	var postponedResize = SCHEDULE.postpone( onResize, 40, this );
 	this.domNode.addEventListener( 'resize', onResize, false );
 
 	var onRedraw = function () {

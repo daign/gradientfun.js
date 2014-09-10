@@ -44,7 +44,7 @@ var main = function () {
 			ctx.restore();
 		}
 	};
-	var throttledRender = throttle( render, 40, this );
+	var throttledRender = SCHEDULE.throttleRAF( render, this );
 	/*rotations.addListener( throttledRender );
 	startRadii.addListener( throttledRender );
 	endRadii.addListener( throttledRender );*/
@@ -80,6 +80,7 @@ var main = function () {
 	var animate = function () {
 		requestAnimationFrame( animate );
 		TWEEN.update();
+		SCHEDULE.update;
 	};
 	animate();
 
