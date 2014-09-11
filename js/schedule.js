@@ -24,29 +24,44 @@ var SCHEDULE = {
 
 	},
 
-	throttle: function ( callback, wait, context ) { // wait 60 = 16fps // wait 40 = 25fps // wait 20 = 50fps
+	blockingThrottle: function ( callback, context, wait ) { // wait 60 = 16fps // wait 40 = 25fps // wait 20 = 50fps
+
+		var blocked = false;
+
+		return function () {
+			if ( blocked ) { return; }
+			blocked = true;
+			callback.apply( context, arguments );
+			setTimeout( function () {
+				blocked = false;
+			}, wait );
+		};
+
+	},
+
+	deferringThrottle: function ( callback, context, wait ) { // wait 60 = 16fps // wait 40 = 25fps // wait 20 = 50fps
 
 		var execute = function () {
-			callback.apply( context || callback, arguments );
+			callback.apply( context, arguments );
 			setTimeout( function () {
-				if ( interrupts ) {
-					interrupts = false;
+				if ( deferredCalls ) {
+					deferredCalls = false;
 					execute();
 				} else {
-					canrun = true;
+					blocked = false;
 				}
 			}, wait );
 		};
 
-		var canrun = true;
-		var interrupts = false;
+		var blocked = false;
+		var deferredCalls = false;
 
 		return function () {
-			if ( !canrun ) {
-				interrupts = true;
+			if ( blocked ) {
+				deferredCalls = true;
 				return;
 			} else {
-				canrun = false;
+				blocked = true;
 				execute();
 			}
 		};
