@@ -2,6 +2,27 @@ var SCHEDULE = {
 
 	tasks: [],
 
+	startRAFLoop: function () {
+
+		var animate = function () {
+			requestAnimationFrame( animate );
+			TWEEN.update();
+			SCHEDULE.update();
+		};
+
+		animate();
+
+	},
+
+	startIntervalLoop: function ( wait ) {
+
+		setInterval( function () {
+			TWEEN.update();
+			SCHEDULE.update();
+		}, wait );
+
+	},
+
 	update: function () {
 
 		for ( var i = 0; i < this.tasks.length; i++ ) {
@@ -13,7 +34,7 @@ var SCHEDULE = {
 
 	},
 
-	throttleRAF: function ( callback, context ) {
+	loopedThrottle: function ( callback, context ) {
 
 		var task = { scheduled: false, callback: callback, context: context };
 		this.tasks.push( task );
@@ -68,11 +89,11 @@ var SCHEDULE = {
 
 	},
 
-	postpone: function ( callback, wait, context ) {
+	postpone: function ( callback, context, wait ) {
 
 		return function () {
 			setTimeout( function () {
-				callback.apply( context || callback, arguments );
+				callback.apply( context, arguments );
 			}, wait );
 		};
 

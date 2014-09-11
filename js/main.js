@@ -44,13 +44,10 @@ var main = function () {
 			ctx.restore();
 		}
 	};
-	var throttledRender = SCHEDULE.throttleRAF( render, this );
-	/*rotations.addListener( throttledRender );
+	var throttledRender = SCHEDULE.loopedThrottle( render, this );
+	rotations.addListener( throttledRender );
 	startRadii.addListener( throttledRender );
-	endRadii.addListener( throttledRender );*/
-	rotations.addListener( render );
-	startRadii.addListener( render );
-	endRadii.addListener( render );
+	endRadii.addListener( throttledRender );
 
 	document.body.appendChild( document.createElement( 'br' ) );
 
@@ -77,13 +74,9 @@ var main = function () {
 	};
 	window.addEventListener( 'resize', onResize, false );
 
-	var animate = function () {
-		requestAnimationFrame( animate );
-		TWEEN.update();
-		SCHEDULE.update;
-	};
-	animate();
+	SCHEDULE.startRAFLoop();
 
+	throttledRender();
 	randomize();
 
 };
