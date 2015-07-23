@@ -1,3 +1,5 @@
+/*
+// set of instances of other value classes, is copied deep
 Value.Set = function () {
 
 	var values = [];
@@ -11,6 +13,7 @@ Value.Set = function () {
 		return values.slice();
 	};
 
+	// sets this instance to the deep copied values of another instance
 	this.copy = function ( s ) {
 		values = [];
 		var sValues = s.getValues();
@@ -20,9 +23,11 @@ Value.Set = function () {
 		return this;
 	};
 
+	// generates a new instance with the same deep copied values
 	this.clone = function () {
 		return new Value.Set().copy( this );
 	};
 
 };
+*/
 

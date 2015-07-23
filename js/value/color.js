@@ -1,3 +1,4 @@
+// rgb color with transparency value a
 Value.Color = function ( r, g, b, a ) {
 
 	this.r = r || 0;
@@ -27,6 +28,7 @@ Value.Color.prototype = {
 		return '#' + ( ( 1 << 24 ) + ( this.r << 16 ) + ( this.g << 8 ) + this.b ).toString( 16 ).slice( 1 );
 	},
 
+	// confine to the conceptual limitations of color values
 	confine: function () {
 		this.r = Math.max( 0, Math.min( 255, this.r ) );
 		this.g = Math.max( 0, Math.min( 255, this.g ) );
@@ -59,6 +61,7 @@ Value.Color.prototype = {
 		return this;
 	},
 
+	// sets this color to the values of another color
 	copy: function ( c ) {
 		this.r = c.r;
 		this.g = c.g;
@@ -66,6 +69,7 @@ Value.Color.prototype = {
 		this.a = c.a;
 	},
 
+	// generates a new color instance with the same values
 	clone: function () {
 		return new Value.Color( this.r, this.g, this.b, this.a );
 	}

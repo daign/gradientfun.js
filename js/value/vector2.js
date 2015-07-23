@@ -15,18 +15,21 @@ Value.Vector2.prototype = {
 		return this;
 	},
 
+	// sets this vector to the coordinates of a mouse event, uses touch event if applicable
 	setFromEvent: function ( event ) {
 		this.x = ( event.clientX !== undefined ) ? event.clientX : ( event.touches && event.touches[ 0 ].clientX );
 		this.y = ( event.clientY !== undefined ) ? event.clientY : ( event.touches && event.touches[ 0 ].clientY );
 		return this;
 	},
 
+	// sets this vector to the values of another vector
 	copy: function ( v ) {
 		this.x = v.x;
 		this.y = v.y;
 		return this;
 	},
 
+	// generates a new vector instance with the same values
 	clone: function () {
 		return new Value.Vector2( this.x, this. y );
 	},

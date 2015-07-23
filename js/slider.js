@@ -2,8 +2,8 @@ Slider = function ( settings ) {
 
 	var self = this;
 
-	this.value   = settings.value;
-	this.domNode = settings.domNode;
+	this.value   = settings.value; // instance of Value.Limited
+	this.domNode = settings.domNode; // div to fill in the slider
 	this.active  = ( settings.active !== undefined ) ? settings.active : true;
 
 	this.width = undefined;

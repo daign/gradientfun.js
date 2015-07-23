@@ -1,3 +1,4 @@
+// gradient between several color stops
 Value.Gradient = function () {
 	this.stops = [];
 };
@@ -6,6 +7,7 @@ Value.Gradient.prototype = {
 
 	constructor: Value.Gradient,
 
+	// adding a new color stop, pos is position between 0 and 1
 	addColorStop: function ( pos, col ) {
 		this.stops.push( { position: pos, color: col } );
 		this.stops.sort( function ( a, b ) {
@@ -19,6 +21,7 @@ Value.Gradient.prototype = {
 		} );
 	},
 
+	// interpolated color with interpolated transparency value at a given position between 0 and 1
 	colorAt: function ( pos ) {
 		var u = 0;
 		while ( pos > this.stops[ u ].position && u < this.stops.length ) {
@@ -34,6 +37,7 @@ Value.Gradient.prototype = {
 		}
 	},
 
+	// sets this instance to the deep copied color stops of another instance
 	copy: function ( g ) {
 		this.stops = [];
 		for ( var i = 0; i < g.stops.length; i++ ) {
@@ -42,6 +46,7 @@ Value.Gradient.prototype = {
 		return this;
 	},
 
+	// generates a new instance with the same deep copied color stops
 	clone: function () {
 		return new Value.Gradient().copy( this );
 	}
