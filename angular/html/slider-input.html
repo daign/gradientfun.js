@@ -1,0 +1,9 @@
+<div class="slider">
+	<div class="value">{{value|number:0}}</div>
+	<div class="container">
+		<div class="bar" style="width: {{width}}px;"></div>
+		<div class="filling" style="width: {{left()+20}}px;"></div>
+		<div class="handle" style="left: {{left()}}px;" ng-mousedown="begin($event)"></div>
+	</div>
+</div>
+

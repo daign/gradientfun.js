@@ -1,0 +1,29 @@
+.slider .value {
+	font-family: sans-serif;
+}
+.slider .container {
+	position: relative;
+}
+.slider .bar {
+	height: 20px;
+	background: #ccc;
+	border-radius: 10px;
+}
+.slider .filling {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 20px;
+	background: #099;
+	border-radius: 10px;
+}
+.slider .handle {
+	position: absolute;
+	top: 0px;
+	width: 20px;
+	height: 20px;
+	background: #066;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
