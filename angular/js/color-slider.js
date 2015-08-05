@@ -3,14 +3,15 @@ app.directive( 'colorSlider', [ '$document', 'ColorUtils', function ( $document,
 		restrict: 'E',
 		templateUrl: 'html/color-slider.html',
 		scope: {
-			value: '=',
+			control: '=',
+			component: '=',
 			max: '=',
 			width: '='
 		},
 		link: function ( scope, element, attrs ) {
 
 			scope.left = function () {
-				return Math.round( scope.value * ( scope.width - 24 ) / scope.max );
+				return Math.round( scope.control.color[ scope.component ] * ( scope.width - 24 ) / scope.max );
 			};
 
 			scope.begin = function ( event ) {
@@ -18,7 +19,7 @@ app.directive( 'colorSlider', [ '$document', 'ColorUtils', function ( $document,
 				event.preventDefault();
 				event.stopPropagation();
 
-				var startValue = scope.value;
+				var startValue = scope.control.color[ scope.component ];
 				var startPos = event.clientX;
 
 				function cancelSelect( event ) {
@@ -29,7 +30,8 @@ app.directive( 'colorSlider', [ '$document', 'ColorUtils', function ( $document,
 				function mousemove( event ) {
 					event.preventDefault();
 					event.stopPropagation();
-					scope.value = Math.max( 0, Math.min( scope.max, startValue + ( event.clientX - startPos ) * scope.max / ( scope.width - 24 ) ) );
+					scope.control.color[ scope.component ] = Math.max( 0, Math.min( scope.max, startValue + ( event.clientX - startPos ) * scope.max / ( scope.width - 24 ) ) );
+					scope.control.callback();
 					scope.$apply();
 				}
 
