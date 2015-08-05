@@ -1,29 +1,33 @@
-.slider .value {
-	font-family: sans-serif;
+.slider {
+	margin: 6px 0px 12px 0px;
 }
 .slider .container {
 	position: relative;
+	height: 24px;
 }
 .slider .bar {
-	height: 20px;
-	background: #ccc;
-	border-radius: 10px;
+	position: relative;
+	top: 3px;
+	left: 3px;
+	height: 18px;
+	background: #876;
+	border-radius: 9px;
 }
 .slider .filling {
 	position: absolute;
-	top: 0px;
-	left: 0px;
-	height: 20px;
-	background: #099;
-	border-radius: 10px;
+	top: 3px;
+	left: 3px;
+	height: 18px;
+	background: #3d9ecb;
+	border-radius: 9px;
 }
 .slider .handle {
 	position: absolute;
 	top: 0px;
-	width: 20px;
-	height: 20px;
-	background: #066;
-	border-radius: 10px;
+	width: 18px;
+	height: 18px;
+	border: 3px solid #fff;
+	border-radius: 12px;
 	cursor: pointer;
 }
 

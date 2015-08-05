@@ -9,13 +9,21 @@
 
 	<script src="https://code.angularjs.org/1.4.3/angular.min.js"></script>
 	<script src="js/gradientfun.js"></script>
+	<script src="js/color-utils.js"></script>
+	<script src="js/value-slider.js"></script>
+	<script src="js/color-slider.js"></script>
 </head>
 <body>
 
 	<div ng-controller="GradientfunController">
-		<slider-input value="one"   max="180" width="200"></slider-input>
-		<slider-input value="two"   max="400" width="240"></slider-input>
-		<slider-input value="three" max="100" width="280"></slider-input>
+		{{one|number:0}}
+		<value-slider value="one"   max="180" width="200"></value-slider>
+		{{two|number:0}}
+		<value-slider value="two"   max="400" width="240"></value-slider>
+		{{three|number:0}}
+		<value-slider value="three" max="100" width="280"></value-slider>
+		{{four|number:0}}
+		<color-slider value="four" max="255" width="320"></color-slider>
 	</div>
 
 </body>
