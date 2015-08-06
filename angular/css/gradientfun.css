@@ -5,6 +5,11 @@ body {
 	margin: 10px;
 }
 
+.colorControl {
+	border: 2px solid #a3cce0;
+	border-radius: 9px;
+	padding: 8px;
+}
 .description {
 	vertical-align: middle;
 }
