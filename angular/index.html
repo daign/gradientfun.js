@@ -10,7 +10,9 @@
 	<script src="https://code.angularjs.org/1.4.3/angular.min.js"></script>
 	<script src="js/gradientfun.js"></script>
 	<script src="js/color-utils.js"></script>
+	<script src="js/schedule.js"></script>
 	<script src="js/helix.js"></script>
+	<script src="js/settings.js"></script>
 	<script src="js/value-slider.js"></script>
 	<script src="js/color-slider.js"></script>
 </head>
@@ -19,41 +21,8 @@
 	<div ng-controller="GradientfunController">
 
 		<helix colors="colors" rotations="rotations"></helix>
+		<settings></settings>
 
-		{{rotations|number:2}}
-		<value-slider value="rotations" max="66.66" width="320"></value-slider>
-		<br/>
-
-		<table class="colorControl">
-			<tr>
-				<td class="description">color</td>
-				<td><input type="color" ng-change="colors[ 0 ].updateFromHex()" ng-model="colors[ 0 ].hex" /> &nbsp; {{colors[ 0 ].hex}}</td>
-			</tr>
-			<tr>
-				<td class="description">red</td>
-				<td><color-slider color="colors[ 0 ]" channel="'red'" width="320"></color-slider></td>
-			</tr>
-			<tr>
-				<td class="description">green</td>
-				<td><color-slider color="colors[ 0 ]" channel="'green'" width="320"></color-slider></td>
-			</tr>
-			<tr>
-				<td class="description">blue</td>
-				<td><color-slider color="colors[ 0 ]" channel="'blue'" width="320"></color-slider></td>
-			</tr>
-			<tr>
-				<td class="description">hue</td>
-				<td><color-slider color="colors[ 0 ]" channel="'hue'" width="320"></color-slider></td>
-			</tr>
-			<tr>
-				<td class="description">saturation</td>
-				<td><color-slider color="colors[ 0 ]" channel="'saturation'" width="320"></color-slider></td>
-			</tr>
-			<tr>
-				<td class="description">lightness</td>
-				<td><color-slider color="colors[ 0 ]" channel="'lightness'" width="320"></color-slider></td>
-			</tr>
-		</table>
 	</div>
 
 </body>

@@ -1,4 +1,4 @@
-app.directive( 'colorSlider', [ '$document', 'ColorUtils', function ( $document, ColorUtils ) {
+app.directive( 'colorSlider', [ '$document', 'ColorUtils', 'Schedule', function ( $document, ColorUtils, Schedule ) {
 	return {
 		restrict: 'E',
 		templateUrl: 'html/color-slider.html',
@@ -43,7 +43,7 @@ app.directive( 'colorSlider', [ '$document', 'ColorUtils', function ( $document,
 					gradient.addColorStop( i/2, new ColorUtils.Color() );
 				}
 
-				updateGradient = function () {
+				var updateGradient = function () {
 					for ( var i = 0; i < 3; i++ ) {
 						var color = gradient.stops[ i ].color;
 						color.copy( scope.color );
@@ -51,9 +51,10 @@ app.directive( 'colorSlider', [ '$document', 'ColorUtils', function ( $document,
 					}
 					drawGradient();
 				};
-				updateGradient();
+				var throttledUpdate = Schedule.deferringThrottle( updateGradient, this, 40 );
+				throttledUpdate();
 
-				scope.$watch( 'color.hex', updateGradient );
+				scope.$watch( 'color.hex', throttledUpdate );
 			}
 
 			scope.left = function () {

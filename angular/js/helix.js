@@ -1,4 +1,4 @@
-app.directive( 'helix', [ 'ColorUtils', function ( ColorUtils ) {
+app.directive( 'helix', [ 'ColorUtils', 'Schedule', function ( ColorUtils, Schedule ) {
 	return {
 		restrict: 'E',
 		templateUrl: 'html/helix.html',
@@ -36,17 +36,17 @@ app.directive( 'helix', [ 'ColorUtils', function ( ColorUtils ) {
 					ctx.restore();
 				}
 			};
-
+			var throttledRender = Schedule.deferringThrottle( render, this, 40 );
 
 
 			for ( var i = 0; i < scope.colors.length; i++ ) {
 				g1.addColorStop( i/(scope.colors.length-1), scope.colors[ i ] );
 			}
 
-			render();
+			throttledRender();
 
-			scope.$watch( 'colors[ 0 ].hex', render );
-			scope.$watch( 'rotations', render );
+			scope.$watch( 'colors[ 0 ].hex', throttledRender );
+			scope.$watch( 'rotations', throttledRender );
 
 		}
 	};

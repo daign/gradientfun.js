@@ -2,7 +2,12 @@ body {
 	font-family: sans-serif;
 	background: #000;
 	color: #a3cce0;
-	margin: 10px;
+	margin: 0px;
+}
+
+.float {
+	float: left;
+	margin: 20px;
 }
 
 .colorControl {
@@ -10,7 +15,13 @@ body {
 	border-radius: 9px;
 	padding: 8px;
 }
-.description {
+td.description {
 	vertical-align: middle;
+}
+td.value {
+	vertical-align: middle;
+	text-align: right;
+	width: 80px;
+	padding-right: 10px;
 }
 
