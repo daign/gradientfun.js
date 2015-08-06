@@ -12,6 +12,7 @@
 	height: 18px;
 	background: #876;
 	border-radius: 9px;
+	overflow: hidden;
 }
 .slider .filling {
 	position: absolute;

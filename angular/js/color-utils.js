@@ -212,15 +212,7 @@ app.factory( 'ColorUtils', function () {
 
 		clone: function () {
 
-			var newColor = new Color();
-			newColor.red        = this.red;
-			newColor.green      = this.green;
-			newColor.blue       = this.blue;
-			newColor.hex        = this.hex;
-			newColor.hue        = this.hue;
-			newColor.saturation = this.saturation;
-			newColor.lightness  = this.lightness;
-			return newColor;
+			return new Color().copy( this );
 
 		}
 
@@ -239,6 +231,21 @@ app.factory( 'ColorUtils', function () {
 		addColorStop: function ( pos, col ) {
 
 			this.stops.push( { position: pos, color: col } );
+			this.sortStops();
+			return this;
+
+		},
+
+		setStops: function ( stops ) {
+
+			this.stops = stops;
+			this.sortStops();
+			return this;
+
+		},
+
+		sortStops: function () {
+
 			this.stops.sort( function ( a, b ) {
 				if ( a.position < b.position ) {
 					return -1;
@@ -248,6 +255,24 @@ app.factory( 'ColorUtils', function () {
 					return 0;
 				}
 			} );
+			return this;
+
+		},
+
+		copy: function ( g ) {
+
+			this.stops = [];
+			for ( var i = 0; i < g.stops.length; i++ ) {
+				this.stops.push( { position: g.stops[ i ].position, color: g.stops[ i ].color.clone() } );
+			}
+			this.sortStops();
+			return this;
+
+		},
+
+		clone: function () {
+
+			return new Gradient().copy( this );
 
 		},
 
