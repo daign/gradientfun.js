@@ -22,10 +22,37 @@
 		<value-slider value="two"   max="400" width="240"></value-slider>
 		{{three|number:0}}
 		<value-slider value="three" max="100" width="280"></value-slider>
-		color: <div style="background: {{controlA.color.hex}}; width: 24px; height: 24px; display: inline-block;"></div>
-		<color-slider control="controlA" component="'hue'" max="360" width="320"></color-slider>
-		<color-slider control="controlA" component="'saturation'" max="1" width="320"></color-slider>
-		<color-slider control="controlA" component="'lightness'" max="1" width="320"></color-slider>
+
+		<table>
+			<tr>
+				<td class="description">color</td>
+				<td><div style="background: {{colorA.hex}}; width: 24px; height: 24px; display: inline-block;"></div></td>
+			</tr>
+			<tr>
+				<td class="description">red</td>
+				<td><color-slider color="colorA" channel="'red'" width="320"></color-slider></td>
+			</tr>
+			<tr>
+				<td class="description">green</td>
+				<td><color-slider color="colorA" channel="'green'" width="320"></color-slider></td>
+			</tr>
+			<tr>
+				<td class="description">blue</td>
+				<td><color-slider color="colorA" channel="'blue'" width="320"></color-slider></td>
+			</tr>
+			<tr>
+				<td class="description">hue</td>
+				<td><color-slider color="colorA" channel="'hue'" width="320"></color-slider></td>
+			</tr>
+			<tr>
+				<td class="description">saturation</td>
+				<td><color-slider color="colorA" channel="'saturation'" width="320"></color-slider></td>
+			</tr>
+			<tr>
+				<td class="description">lightness</td>
+				<td><color-slider color="colorA" channel="'lightness'" width="320"></color-slider></td>
+			</tr>
+		</table>
 	</div>
 
 </body>

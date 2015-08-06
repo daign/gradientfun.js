@@ -1,5 +1,14 @@
 app.factory( 'ColorUtils', function () {
 
+	var CHANNEL_MAX = {
+		red:        255,
+		green:      255,
+		blue:       255,
+		hue:        360,
+		saturation:   1,
+		lightness:    1
+	};
+
 	var Color = function () {
 
 		this.red   = 0;  // 0 <= red <= 255
@@ -40,6 +49,18 @@ app.factory( 'ColorUtils', function () {
 			this.saturation = s;
 			this.lightness  = l;
 			this.updateFromHSL();
+			return this;
+
+		},
+
+		setChannel: function ( c, v ) {
+
+			     if ( c === 'red' )        { this.red   = Math.round( v ); this.updateFromRGB(); }
+			else if ( c === 'green' )      { this.green = Math.round( v ); this.updateFromRGB(); }
+			else if ( c === 'blue' )       { this.blue  = Math.round( v ); this.updateFromRGB(); }
+			else if ( c === 'hue' )        { this.hue        = v; this.updateFromHSL(); }
+			else if ( c === 'saturation' ) { this.saturation = v; this.updateFromHSL(); }
+			else if ( c === 'lightness' )  { this.lightness  = v; this.updateFromHSL(); }
 			return this;
 
 		},
@@ -251,7 +272,11 @@ app.factory( 'ColorUtils', function () {
 
 	};
 
-	return { Color: Color, Gradient: Gradient };
+	return {
+		CHANNEL_MAX: CHANNEL_MAX,
+		Color:       Color,
+		Gradient:    Gradient
+	};
 
 } );
 

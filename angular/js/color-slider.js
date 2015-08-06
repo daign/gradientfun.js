@@ -3,15 +3,16 @@ app.directive( 'colorSlider', [ '$document', 'ColorUtils', function ( $document,
 		restrict: 'E',
 		templateUrl: 'html/color-slider.html',
 		scope: {
-			control: '=',
-			component: '=',
-			max: '=',
+			color: '=',
+			channel: '=',
 			width: '='
 		},
 		link: function ( scope, element, attrs ) {
 
+			scope.max = ColorUtils.CHANNEL_MAX[ scope.channel ];
+
 			scope.left = function () {
-				return Math.round( scope.control.color[ scope.component ] * ( scope.width - 24 ) / scope.max );
+				return Math.round( scope.color[ scope.channel ] * ( scope.width - 24 ) / scope.max );
 			};
 
 			scope.begin = function ( event ) {
@@ -19,7 +20,7 @@ app.directive( 'colorSlider', [ '$document', 'ColorUtils', function ( $document,
 				event.preventDefault();
 				event.stopPropagation();
 
-				var startValue = scope.control.color[ scope.component ];
+				var startValue = scope.color[ scope.channel ];
 				var startPos = event.clientX;
 
 				function cancelSelect( event ) {
@@ -30,8 +31,7 @@ app.directive( 'colorSlider', [ '$document', 'ColorUtils', function ( $document,
 				function mousemove( event ) {
 					event.preventDefault();
 					event.stopPropagation();
-					scope.control.color[ scope.component ] = Math.max( 0, Math.min( scope.max, startValue + ( event.clientX - startPos ) * scope.max / ( scope.width - 24 ) ) );
-					scope.control.callback();
+					scope.color.setChannel( scope.channel, Math.max( 0, Math.min( scope.max, startValue + ( event.clientX - startPos ) * scope.max / ( scope.width - 24 ) ) ) );
 					scope.$apply();
 				}
 
