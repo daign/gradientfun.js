@@ -54,7 +54,7 @@ app.directive( 'colorSlider', [ '$document', 'ColorUtils', 'Schedule', function 
 				var throttledUpdate = Schedule.deferringThrottle( updateGradient, this, 40 );
 				throttledUpdate();
 
-				scope.$watch( 'color.hex', throttledUpdate );
+				scope.$watch( 'color.hash', throttledUpdate );
 			}
 
 			scope.left = function () {

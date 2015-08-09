@@ -45,7 +45,11 @@ app.directive( 'helix', [ 'ColorUtils', 'Schedule', function ( ColorUtils, Sched
 
 			throttledRender();
 
-			scope.$watch( 'colors[ 0 ].hex', throttledRender );
+			scope.$watch( 'colors[ 0 ].hash', throttledRender );
+			scope.$watch( 'colors[ 1 ].hash', throttledRender );
+			scope.$watch( 'colors[ 2 ].hash', throttledRender );
+			scope.$watch( 'colors[ 3 ].hash', throttledRender );
+			scope.$watch( 'colors[ 4 ].hash', throttledRender );
 			scope.$watch( 'rotations', throttledRender );
 
 		}

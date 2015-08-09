@@ -18,6 +18,7 @@ app.factory( 'ColorUtils', function () {
 		this.hue        = 0;  // 0 <= hue < 360
 		this.saturation = 0;  // 0 <= saturation <= 1
 		this.lightness  = 0;  // 0 <= lightness <= 1
+		this.hash = 0;
 
 	};
 
@@ -69,6 +70,7 @@ app.factory( 'ColorUtils', function () {
 
 			this.HexFromRGB();
 			this.HSLFromRGB();
+			this.calculateHash();
 			return this;
 
 		},
@@ -77,6 +79,7 @@ app.factory( 'ColorUtils', function () {
 
 			this.RGBFromHex();
 			this.HSLFromRGB();
+			this.calculateHash();
 			return this;
 
 		},
@@ -85,6 +88,7 @@ app.factory( 'ColorUtils', function () {
 
 			this.RGBFromHSL();
 			this.HexFromRGB();
+			this.calculateHash();
 			return this;
 
 		},
@@ -157,6 +161,12 @@ app.factory( 'ColorUtils', function () {
 
 		},
 
+		calculateHash: function () {
+
+			this.hash = ( ( Math.round( this.hue * 10 ) * 256 + this.red ) * 256 + this.green ) * 256 + this.blue;
+
+		},
+
 		confine: function () {
 
 			this.red   = Math.max( 0, Math.min( 255, this.red ) );
@@ -206,6 +216,7 @@ app.factory( 'ColorUtils', function () {
 			this.hue        = c.hue;
 			this.saturation = c.saturation;
 			this.lightness  = c.lightness;
+			this.hash       = c.hash;
 			return this;
 
 		},

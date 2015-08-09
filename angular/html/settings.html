@@ -1,43 +1,59 @@
 <div class="float">
-	{{rotations|number:2}}
-	<value-slider value="rotations" max="66.66" width="520"></value-slider>
-	<br/>
-
-	<table class="colorControl">
+	<table>
 		<tr>
-			<td class="description">color</td>
-			<td class="value">{{colors[ 0 ].hex}}</td>
-			<td><input type="color" ng-change="colors[ 0 ].updateFromHex()" ng-model="colors[ 0 ].hex" /></td>
+			<td class="description">rotations</td>
+			<td class="value">{{rotations|number:2}}</td>
+			<td><value-slider value="rotations" max="66.66" width="434"></value-slider></td>
 		</tr>
 		<tr>
-			<td class="description">red</td>
-			<td class="value">{{colors[ 0 ].red}}</td>
-			<td><color-slider color="colors[ 0 ]" channel="'red'" width="320"></color-slider></td>
-		</tr>
-		<tr>
-			<td class="description">green</td>
-			<td class="value">{{colors[ 0 ].green}}</td>
-			<td><color-slider color="colors[ 0 ]" channel="'green'" width="320"></color-slider></td>
-		</tr>
-		<tr>
-			<td class="description">blue</td>
-			<td class="value">{{colors[ 0 ].blue}}</td>
-			<td><color-slider color="colors[ 0 ]" channel="'blue'" width="320"></color-slider></td>
-		</tr>
-		<tr>
-			<td class="description">hue</td>
-			<td class="value">{{colors[ 0 ].hue|number:1}}°</td>
-			<td><color-slider color="colors[ 0 ]" channel="'hue'" width="320"></color-slider></td>
-		</tr>
-		<tr>
-			<td class="description">saturation</td>
-			<td class="value">{{colors[ 0 ].saturation*100|number:1}} %</td>
-			<td><color-slider color="colors[ 0 ]" channel="'saturation'" width="320"></color-slider></td>
-		</tr>
-		<tr>
-			<td class="description">lightness</td>
-			<td class="value">{{colors[ 0 ].lightness*100|number:1}} %</td>
-			<td><color-slider color="colors[ 0 ]" channel="'lightness'" width="320"></color-slider></td>
+			<td style="vertical-align: top;">
+				<div ng-repeat="n in colornumbers" class="colorListItem" ng-click="setActiveColor(n)"
+					style="background: {{ ( n === activecolor ) ? '#3d9ecb' : '#876' }};"
+				>
+					color&#160;{{n+1}}
+				</div>
+			</td>
+			<td colspan="2">
+				<div ng-repeat="n in colornumbers" ng-show="n === activecolor">
+					<table class="colorControl">
+						<tr>
+							<td><input type="color" ng-change="colors[ n ].updateFromHex()" ng-model="colors[ n ].hex" /></td>
+							<td class="value">{{colors[ n ].hex}}</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td class="description">red</td>
+							<td class="value">{{colors[ n ].red}}</td>
+							<td><color-slider color="colors[ n ]" channel="'red'" width="320"></color-slider></td>
+						</tr>
+						<tr>
+							<td class="description">green</td>
+							<td class="value">{{colors[ n ].green}}</td>
+							<td><color-slider color="colors[ n ]" channel="'green'" width="320"></color-slider></td>
+						</tr>
+						<tr>
+							<td class="description">blue</td>
+							<td class="value">{{colors[ n ].blue}}</td>
+							<td><color-slider color="colors[ n ]" channel="'blue'" width="320"></color-slider></td>
+						</tr>
+						<tr>
+							<td class="description">hue</td>
+							<td class="value">{{colors[ n ].hue|number:1}}°</td>
+							<td><color-slider color="colors[ n ]" channel="'hue'" width="320"></color-slider></td>
+						</tr>
+						<tr>
+							<td class="description">saturation</td>
+							<td class="value">{{colors[ n ].saturation*100|number:1}} %</td>
+							<td><color-slider color="colors[ n ]" channel="'saturation'" width="320"></color-slider></td>
+						</tr>
+						<tr>
+							<td class="description">lightness</td>
+							<td class="value">{{colors[ n ].lightness*100|number:1}} %</td>
+							<td><color-slider color="colors[ n ]" channel="'lightness'" width="320"></color-slider></td>
+						</tr>
+					</table>
+				</div>
+			</td>
 		</tr>
 	</table>
 </div>
