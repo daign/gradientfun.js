@@ -1,8 +1,8 @@
 <div class="slider">
 	<div class="container" style="width: {{width}}px;">
-		<div class="bar" style="width: {{width-6}}px;"></div>
-		<div class="filling" style="width: {{left()+18}}px;"></div>
-		<div class="handle" style="left: {{left()}}px;" ng-mousedown="begin($event)"></div>
+		<div class="bar" style="width: {{width-6}}px;" ng-mousedown="begin($event,true)"></div>
+		<div class="filling" style="width: {{left()+18}}px;" ng-mousedown="begin($event,true)"></div>
+		<div class="handle" style="left: {{left()}}px;" ng-mousedown="begin($event,false)"></div>
 	</div>
 </div>
 

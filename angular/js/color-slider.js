@@ -61,10 +61,14 @@ app.directive( 'colorSlider', [ '$document', 'ColorUtils', 'Schedule', function 
 				return Math.round( scope.color[ scope.channel ] * ( scope.width - 24 ) / scope.max );
 			};
 
-			scope.begin = function ( event ) {
+			scope.begin = function ( event, withJump ) {
 
 				event.preventDefault();
 				event.stopPropagation();
+
+				if ( withJump ) {
+					scope.color.setChannel( scope.channel, Math.max( 0, Math.min( scope.max, ( event.layerX - 10 ) * scope.max / ( scope.width - 24 ) ) ) );
+				}
 
 				var startValue = scope.color[ scope.channel ];
 				var startPos = event.clientX;

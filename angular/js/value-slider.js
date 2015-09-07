@@ -13,10 +13,14 @@ app.directive( 'valueSlider', [ '$document', function ( $document ) {
 				return Math.round( scope.value * ( scope.width - 24 ) / scope.max );
 			};
 
-			scope.begin = function ( event ) {
+			scope.begin = function ( event, withJump ) {
 
 				event.preventDefault();
 				event.stopPropagation();
+
+				if ( withJump ) {
+					scope.value = Math.max( 0, Math.min( scope.max, ( event.layerX - 10 ) * scope.max / ( scope.width - 24 ) ) );
+				}
 
 				var startValue = scope.value;
 				var startPos = event.clientX;

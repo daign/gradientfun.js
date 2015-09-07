@@ -11,13 +11,13 @@ app.factory( 'ColorUtils', function () {
 
 	var Color = function () {
 
-		this.red   = 0;  // 0 <= red <= 255
-		this.green = 0;  // 0 <= green <= 255
-		this.blue  = 0;  // 0 <= blue <= 255
+		this.red   = 0;  // Int, 0 <= red <= 255
+		this.green = 0;  // Int, 0 <= green <= 255
+		this.blue  = 0;  // Int, 0 <= blue <= 255
 		this.hex   = '#000000';
-		this.hue        = 0;  // 0 <= hue < 360
-		this.saturation = 0;  // 0 <= saturation <= 1
-		this.lightness  = 0;  // 0 <= lightness <= 1
+		this.hue        = 0;  // Float, 0 <= hue <= 360
+		this.saturation = 0;  // Float, 0 <= saturation <= 1
+		this.lightness  = 0;  // Float, 0 <= lightness <= 1
 		this.hash = 0;
 
 	};
@@ -120,7 +120,7 @@ app.factory( 'ColorUtils', function () {
 			var min = Math.min( norm.red, norm.green, norm.blue );
 			var c = max - min;
 
-			if ( c === 0 ) {
+			if ( c <= 0 ) {
 				this.hue = 0;
 			} else if ( norm.red >= norm.green && norm.red >= norm.blue ) {
 				this.hue = ( ( ( ( norm.green - norm.blue ) / c ) + 6 ) % 6 ) * 60;
@@ -163,7 +163,7 @@ app.factory( 'ColorUtils', function () {
 
 		calculateHash: function () {
 
-			this.hash = ( ( Math.round( this.hue * 10 ) * 256 + this.red ) * 256 + this.green ) * 256 + this.blue;
+			this.hash = ( ( ( Math.round( this.hue * 10 ) * 101 + Math.round( this.saturation * 100 ) ) * 256 + this.red ) * 256 + this.green ) * 256 + this.blue;
 
 		},
 
